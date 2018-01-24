@@ -83,6 +83,10 @@
     <Compile Include="Migrations\201801240529347_InitialDB.Designer.cs">
       <DependentUpon>201801240529347_InitialDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801240534087_GenreMovies.cs" />
+    <Compile Include="Migrations\201801240534087_GenreMovies.Designer.cs">
+      <DependentUpon>201801240534087_GenreMovies.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -99,6 +103,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201801240529347_InitialDB.resx">
       <DependentUpon>201801240529347_InitialDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801240534087_GenreMovies.resx">
+      <DependentUpon>201801240534087_GenreMovies.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
