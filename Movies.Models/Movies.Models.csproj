@@ -61,6 +61,7 @@
     <Compile Include="Common\Entity.cs" />
     <Compile Include="Common\IAuditableEntity.cs" />
     <Compile Include="Common\IEntity.cs" />
+    <Compile Include="Movie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
