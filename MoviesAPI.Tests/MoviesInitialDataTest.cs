@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Transactions;
 using CsvHelper;
@@ -26,6 +27,7 @@ namespace MoviesAPI.Tests
 
             using (var scope = new TransactionScope())
             {
+                Database.SetInitializer<MovieDbContext>(null);
 
                 using (var db = new MovieDbContext())
                 {
