@@ -26,7 +26,9 @@ namespace Movies.Models
         public bool? IsReleased { get; set; }
         public decimal? AverageVote { get; set; }
         public int? VoteCount { get; set; }
+        public int ExternalId { get; set; }
 
         public ICollection<Genre> Genres { get; set; }
+        public ICollection<MovieCasts> MovieCastses { get; set; }
     }
 }

@@ -3,7 +3,7 @@ namespace Movies.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialDB : DbMigration
+    public partial class InitialDatabaseDesign : DbMigration
     {
         public override void Up()
         {
@@ -29,6 +29,55 @@ namespace Movies.Data.Migrations
                         IsReleased = c.Boolean(),
                         AverageVote = c.Decimal(precision: 18, scale: 2),
                         VoteCount = c.Int(),
+                        ExternalId = c.Int(nullable: false),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Genres",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.MovieCasts",
+                c => new
+                    {
+                        MovieId = c.Int(nullable: false),
+                        CastId = c.Int(nullable: false),
+                        Character = c.String(nullable: false, maxLength: 128),
+                        MovieCasts_MovieId = c.Int(),
+                        MovieCasts_CastId = c.Int(),
+                        MovieCasts_Character = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => new { t.MovieId, t.CastId, t.Character })
+                .ForeignKey("dbo.Casts", t => t.CastId, cascadeDelete: true)
+                .ForeignKey("dbo.Movies", t => t.MovieId, cascadeDelete: true)
+                .ForeignKey("dbo.MovieCasts", t => new { t.MovieCasts_MovieId, t.MovieCasts_CastId, t.MovieCasts_Character })
+                .Index(t => t.MovieId)
+                .Index(t => t.CastId)
+                .Index(t => new { t.MovieCasts_MovieId, t.MovieCasts_CastId, t.MovieCasts_Character });
+            
+            CreateTable(
+                "dbo.Casts",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Gender = c.String(),
+                        ExternalId = c.Int(nullable: false),
+                        ProfilePath = c.String(),
                         CreatedDate = c.DateTime(),
                         CreatedBy = c.String(),
                         UpdatedDate = c.DateTime(),
@@ -111,6 +160,19 @@ namespace Movies.Data.Migrations
                 .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
             
+            CreateTable(
+                "dbo.GenreMovies",
+                c => new
+                    {
+                        Genre_Id = c.Int(nullable: false),
+                        Movie_Id = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Genre_Id, t.Movie_Id })
+                .ForeignKey("dbo.Genres", t => t.Genre_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Movies", t => t.Movie_Id, cascadeDelete: true)
+                .Index(t => t.Genre_Id)
+                .Index(t => t.Movie_Id);
+            
         }
         
         public override void Down()
@@ -119,17 +181,31 @@ namespace Movies.Data.Migrations
             DropForeignKey("dbo.UserLogins", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserClaims", "UserId", "dbo.Users");
             DropForeignKey("dbo.UserRoles", "RoleId", "dbo.Roles");
+            DropForeignKey("dbo.MovieCasts", new[] { "MovieCasts_MovieId", "MovieCasts_CastId", "MovieCasts_Character" }, "dbo.MovieCasts");
+            DropForeignKey("dbo.MovieCasts", "MovieId", "dbo.Movies");
+            DropForeignKey("dbo.MovieCasts", "CastId", "dbo.Casts");
+            DropForeignKey("dbo.GenreMovies", "Movie_Id", "dbo.Movies");
+            DropForeignKey("dbo.GenreMovies", "Genre_Id", "dbo.Genres");
+            DropIndex("dbo.GenreMovies", new[] { "Movie_Id" });
+            DropIndex("dbo.GenreMovies", new[] { "Genre_Id" });
             DropIndex("dbo.UserLogins", new[] { "UserId" });
             DropIndex("dbo.UserClaims", new[] { "UserId" });
             DropIndex("dbo.Users", "UserNameIndex");
             DropIndex("dbo.UserRoles", new[] { "RoleId" });
             DropIndex("dbo.UserRoles", new[] { "UserId" });
             DropIndex("dbo.Roles", "RoleNameIndex");
+            DropIndex("dbo.MovieCasts", new[] { "MovieCasts_MovieId", "MovieCasts_CastId", "MovieCasts_Character" });
+            DropIndex("dbo.MovieCasts", new[] { "CastId" });
+            DropIndex("dbo.MovieCasts", new[] { "MovieId" });
+            DropTable("dbo.GenreMovies");
             DropTable("dbo.UserLogins");
             DropTable("dbo.UserClaims");
             DropTable("dbo.Users");
             DropTable("dbo.UserRoles");
             DropTable("dbo.Roles");
+            DropTable("dbo.Casts");
+            DropTable("dbo.MovieCasts");
+            DropTable("dbo.Genres");
             DropTable("dbo.Movies");
         }
     }
