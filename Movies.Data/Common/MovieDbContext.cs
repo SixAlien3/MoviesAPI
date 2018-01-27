@@ -21,6 +21,10 @@ namespace Movies.Data.Common
         }
 
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<Cast> Casts { get; set; }
+        public DbSet<Rental> Rentals { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

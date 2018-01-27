@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
+using System.Linq;
 using System.Transactions;
 using CsvHelper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,7 +16,7 @@ namespace MoviesAPI.Tests
     [TestClass]
     public class MoviesInitialDataTest
     {
-        [TestMethod]
+        //  [TestMethod]
         public void PopulateInitialMoviesTableData()
         {
             TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\movies_metadata.csv");
@@ -72,6 +73,62 @@ namespace MoviesAPI.Tests
                 }
 
                 scope.Complete();
+            }
+        }
+
+       // [TestMethod]
+        public void PopulateGeneresLookupTabeData()
+        {
+            TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\movies_metadata.csv");
+            var csv = new CsvReader(readFile);
+            csv.Configuration.BadDataFound = null;
+            csv.Configuration.ReadingExceptionOccurred = null;
+            var moviesFromCsv = csv.GetRecords<dynamic>();
+
+            List<Genre> genresTotal = new List<Genre>();
+
+            foreach (var mov in moviesFromCsv)
+            {
+                JArray genreArray = JArray.Parse(mov.genres);
+                int id;
+                var ImdbId = Int32.TryParse(mov.id, out id) ? id : 0;
+
+                foreach (var g in genreArray)
+                {
+                    var genres = JsonConvert.DeserializeObject<Genre>(g.ToString());
+                    genresTotal.Add(genres);
+                }
+            }
+
+            List<Genre> genresDistinct = new List<Genre>();
+
+            foreach (var genre in genresTotal.Select(g => new {id = g.Id, name = g.Name}).Distinct())
+            {
+                genresDistinct.Add(new Genre() {Id = genre.id, Name = genre.name});
+            }
+
+
+            using (var scope = new TransactionScope())
+            {
+                Database.SetInitializer<MovieDbContext>(null);
+                using (var db = new MovieDbContext())
+                {
+                    db.Configuration.AutoDetectChangesEnabled = false;
+
+                    foreach (var g in genresDistinct)
+                    {
+                        var gg = new Genre
+                        {
+                            Id = g.Id,
+                            Name = g.Name
+                        };
+                        db.Genres.Add(gg);
+                    }
+
+                     db.SaveChanges();
+                }
+
+                 scope.Complete();
             }
         }
     }

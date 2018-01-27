@@ -83,6 +83,10 @@
     <Compile Include="Migrations\201801271847049_InitialDatabaseDesign.Designer.cs">
       <DependentUpon>201801271847049_InitialDatabaseDesign.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801271923039_RentalTable.cs" />
+    <Compile Include="Migrations\201801271923039_RentalTable.Designer.cs">
+      <DependentUpon>201801271923039_RentalTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -99,6 +103,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201801271847049_InitialDatabaseDesign.resx">
       <DependentUpon>201801271847049_InitialDatabaseDesign.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801271923039_RentalTable.resx">
+      <DependentUpon>201801271923039_RentalTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
