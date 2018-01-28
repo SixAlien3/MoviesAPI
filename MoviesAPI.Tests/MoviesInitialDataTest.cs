@@ -78,7 +78,7 @@ namespace MoviesAPI.Tests
         }
 
         // [TestMethod]
-        public void PopulateGeneresLookupTabeData()
+        public void PopulateGeneresLookupTableData()
         {
             TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\movies_metadata.csv");
             var csv = new CsvReader(readFile);
@@ -132,6 +132,60 @@ namespace MoviesAPI.Tests
                 scope.Complete();
             }
         }
+
+         [TestMethod]
+        public void PopulateKeywordsLookupTableData()
+        {
+            TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\keywords.csv");
+            var csv = new CsvReader(readFile);
+            csv.Configuration.BadDataFound = null;
+            csv.Configuration.ReadingExceptionOccurred = null;
+            var keyWordsFromCsv = csv.GetRecords<dynamic>();
+
+            List<Keyword> keywordsTotal = new List<Keyword>();
+
+            foreach (var mov in keyWordsFromCsv)
+            {
+                JArray keywordArray = JArray.Parse(mov.keywords);
+                foreach (var g in keywordArray)
+                {
+                    var keywords = JsonConvert.DeserializeObject<Keyword>(g.ToString());
+                    keywordsTotal.Add(keywords);
+                }
+            }
+
+            List<Keyword> keywordsDistinct = new List<Keyword>();
+
+            foreach (var key in keywordsTotal.Select(g => new {id = g.Id, name = g.Name}).Distinct())
+            {
+                keywordsDistinct.Add(new Keyword() {Id = key.id, Name = key.name});
+            }
+
+
+            using (var scope = new TransactionScope())
+            {
+                Database.SetInitializer<MovieDbContext>(null);
+                using (var db = new MovieDbContext())
+                {
+                    db.Configuration.AutoDetectChangesEnabled = false;
+
+                    foreach (var g in keywordsDistinct)
+                    {
+                        var gg = new Keyword
+                        {
+                            Id = g.Id,
+                            Name = g.Name
+                        };
+                        db.Keywords.Add(gg);
+                    }
+
+                   // db.SaveChanges();
+                }
+
+                scope.Complete();
+            }
+        }
+
 
         // [TestMethod]
         public void PopulateMovieGenresTableData()
@@ -241,7 +295,7 @@ namespace MoviesAPI.Tests
             }
         }
 
-       // [TestMethod]
+        // [TestMethod]
         public void PopulateMovieCastsTableData()
         {
             TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\credits.csv");
@@ -304,7 +358,6 @@ namespace MoviesAPI.Tests
                                 if (string.IsNullOrEmpty(g.Character) && g.Character.Length > 127)
                                 {
                                     character = g.Character.Substring(0, 125);
-                                    
                                 }
                                 else
                                 {
