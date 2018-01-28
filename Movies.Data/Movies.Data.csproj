@@ -91,6 +91,14 @@
     <Compile Include="Migrations\201801280144586_MovieCastsUpdate.Designer.cs">
       <DependentUpon>201801280144586_MovieCastsUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801280451590_MovieCastsCharacterLength.cs" />
+    <Compile Include="Migrations\201801280451590_MovieCastsCharacterLength.Designer.cs">
+      <DependentUpon>201801280451590_MovieCastsCharacterLength.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801280454157_MovieCastsCharacterLengthReducedBack.cs" />
+    <Compile Include="Migrations\201801280454157_MovieCastsCharacterLengthReducedBack.Designer.cs">
+      <DependentUpon>201801280454157_MovieCastsCharacterLengthReducedBack.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -113,6 +121,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801280144586_MovieCastsUpdate.resx">
       <DependentUpon>201801280144586_MovieCastsUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801280451590_MovieCastsCharacterLength.resx">
+      <DependentUpon>201801280451590_MovieCastsCharacterLength.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801280454157_MovieCastsCharacterLengthReducedBack.resx">
+      <DependentUpon>201801280454157_MovieCastsCharacterLengthReducedBack.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

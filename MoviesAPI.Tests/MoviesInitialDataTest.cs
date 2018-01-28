@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Transactions;
@@ -132,7 +133,7 @@ namespace MoviesAPI.Tests
             }
         }
 
-       // [TestMethod]
+        // [TestMethod]
         public void PopulateMovieGenresTableData()
         {
             TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\movies_metadata.csv");
@@ -181,7 +182,7 @@ namespace MoviesAPI.Tests
                         int genreId = genresFromDb.Where(gn => gn.Name == g.Name).Select(gn => gn.Id).FirstOrDefault();
                         Genre genre = new Genre() {Id = genreId};
 
-                          db.Database.ExecuteSqlCommand("Insert into MovieGenres Values({0},{1})", genreId, movie.Id);
+                        db.Database.ExecuteSqlCommand("Insert into MovieGenres Values({0},{1})", genreId, movie.Id);
                     }
                 }
             }
@@ -240,10 +241,105 @@ namespace MoviesAPI.Tests
             }
         }
 
-
+        [TestMethod]
         public void PopulateMovieCastsTableData()
         {
+            TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\credits.csv");
+            var csv = new CsvReader(readFile);
+            csv.Configuration.BadDataFound = null;
+            csv.Configuration.ReadingExceptionOccurred = null;
+            var castsFromCsv = csv.GetRecords<dynamic>();
+            Dictionary<string, List<Cast>> movieCastDictionary = new Dictionary<string, List<Cast>>();
+            Dictionary<string, List<MovieCasts>> movieCastDictionary2 = new Dictionary<string, List<MovieCasts>>();
+            List<Cast> casts = new List<Cast>();
+            List<Movie> moviesFromDb;
+            int totalRecords = 0;
+            int nonRecords = 0;
+            foreach (var c in castsFromCsv)
+            {
+                try
+                {
+                    List<Cast> eachMovieCasts = new List<Cast>();
+                    List<MovieCasts> eachMovieCasts2 = new List<MovieCasts>();
 
+                    JArray casteArray = JArray.Parse(c.casting);
+                    string movieid = c.id;
+                    foreach (var cast in casteArray)
+                    {
+                        var castings = JsonConvert.DeserializeObject<MovieCasts>(cast.ToString());
+                        eachMovieCasts2.Add(castings);
+                    }
+
+                    movieCastDictionary2.Add(movieid, eachMovieCasts2);
+                }
+                catch (Exception e)
+                {
+                    //Console.WriteLine(c.id + ":: " + e.InnerException);
+                }
+            }
+
+            Database.SetInitializer<MovieDbContext>(null);
+            using (var db = new MovieDbContext())
+            {
+                moviesFromDb = db.Movies.ToList();
+                casts = db.Casts.ToList();
+            }
+
+            using (var db = new MovieDbContext())
+            {
+                List<MovieCasts> movieCastses = new List<MovieCasts>();
+
+                foreach (var m in moviesFromDb)
+                {
+                    if (movieCastDictionary2.ContainsKey(m.ExternalId.ToString()))
+                    {
+                        var caststoAdd = movieCastDictionary2[m.ExternalId.ToString()];
+                        foreach (var g in caststoAdd)
+                        {
+                            try
+                            {
+                                int castid = casts.Where(gn => gn.ExternalId == g.CastId).Select(gn => gn.Id)
+                                    .FirstOrDefault();
+                                string character;
+                                if (string.IsNullOrEmpty(g.Character) && g.Character.Length > 127)
+                                {
+                                    character = g.Character.Substring(0, 125);
+                                    
+                                }
+                                else
+                                {
+                                    character = g.Character;
+                                }
+
+                                db.Database.ExecuteSqlCommand("Insert into MovieCasts Values({0},{1},{2})", m.Id,
+                                    castid, character);
+                                if (!movieCastses.Any(mc =>
+                                    mc.MovieId == m.Id && mc.Character == character && mc.CastId == castid))
+                                {
+                                    totalRecords++;
+                                }
+
+                                {
+                                    nonRecords++;
+                                }
+
+                                movieCastses.Add(new MovieCasts()
+                                {
+                                    CastId = castid,
+                                    MovieId = m.Id,
+                                    Character = character
+                                });
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.WriteLine(e.Message);
+                            }
+                        }
+                    }
+                }
+            }
+
+            Assert.AreEqual(totalRecords, nonRecords);
         }
     }
 }
