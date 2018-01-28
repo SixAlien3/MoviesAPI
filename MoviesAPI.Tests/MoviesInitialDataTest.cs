@@ -241,7 +241,7 @@ namespace MoviesAPI.Tests
             }
         }
 
-        [TestMethod]
+       // [TestMethod]
         public void PopulateMovieCastsTableData()
         {
             TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\credits.csv");
