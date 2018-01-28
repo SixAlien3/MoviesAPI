@@ -99,6 +99,10 @@
     <Compile Include="Migrations\201801280454157_MovieCastsCharacterLengthReducedBack.Designer.cs">
       <DependentUpon>201801280454157_MovieCastsCharacterLengthReducedBack.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801280545317_MovieKeywords.cs" />
+    <Compile Include="Migrations\201801280545317_MovieKeywords.Designer.cs">
+      <DependentUpon>201801280545317_MovieKeywords.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -127,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801280454157_MovieCastsCharacterLengthReducedBack.resx">
       <DependentUpon>201801280454157_MovieCastsCharacterLengthReducedBack.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801280545317_MovieKeywords.resx">
+      <DependentUpon>201801280545317_MovieKeywords.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

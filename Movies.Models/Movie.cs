@@ -30,5 +30,6 @@ namespace Movies.Models
 
         public ICollection<Genre> Genres { get; set; }
         public ICollection<MovieCasts> MovieCastses { get; set; }
+        public ICollection<Keyword> Keywords { get; set; }
     }
 }

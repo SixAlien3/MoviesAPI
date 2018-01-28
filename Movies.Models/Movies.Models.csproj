@@ -63,6 +63,7 @@
     <Compile Include="Common\IAuditableEntity.cs" />
     <Compile Include="Common\IEntity.cs" />
     <Compile Include="Genre.cs" />
+    <Compile Include="Keyword.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieCasts.cs" />
     <Compile Include="Rental.cs" />
