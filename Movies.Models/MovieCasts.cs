@@ -17,7 +17,5 @@ namespace Movies.Models
 
         public Movie Movie { get; set; }
         public Cast Cast { get; set; }
-
-        public ICollection<MovieCasts> MovieCastses { get; set; }
     }
 }

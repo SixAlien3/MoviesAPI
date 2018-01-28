@@ -76,7 +76,7 @@ namespace MoviesAPI.Tests
             }
         }
 
-       // [TestMethod]
+        // [TestMethod]
         public void PopulateGeneresLookupTabeData()
         {
             TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\movies_metadata.csv");
@@ -125,11 +125,125 @@ namespace MoviesAPI.Tests
                         db.Genres.Add(gg);
                     }
 
-                     db.SaveChanges();
+                    db.SaveChanges();
                 }
 
-                 scope.Complete();
+                scope.Complete();
             }
+        }
+
+       // [TestMethod]
+        public void PopulateMovieGenresTableData()
+        {
+            TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\movies_metadata.csv");
+            var csv = new CsvReader(readFile);
+            csv.Configuration.BadDataFound = null;
+            csv.Configuration.ReadingExceptionOccurred = null;
+            var moviesFromCsv = csv.GetRecords<dynamic>();
+            List<Movie> moviesFromDb;
+            List<Genre> genresFromDb;
+            Dictionary<int, List<Genre>> moviesGenresDictionary = new Dictionary<int, List<Genre>>();
+
+            foreach (var mov in moviesFromCsv)
+            {
+                List<Genre> genresTotal = new List<Genre>();
+                JArray genreArray = JArray.Parse(mov.genres);
+                int id;
+                var externalId = Int32.TryParse(mov.id, out id) ? id : 0;
+                foreach (var g in genreArray)
+                {
+                    var genres = JsonConvert.DeserializeObject<Genre>(g.ToString());
+                    genresTotal.Add(genres);
+                }
+
+                moviesGenresDictionary.Add(externalId, genresTotal);
+            }
+
+
+            Database.SetInitializer<MovieDbContext>(null);
+            using (var db = new MovieDbContext())
+            {
+                moviesFromDb = db.Movies.ToList();
+                genresFromDb = db.Genres.ToList();
+            }
+
+            using (var db = new MovieDbContext())
+            {
+                // db.Configuration.AutoDetectChangesEnabled = false;
+
+                foreach (var m in moviesFromDb)
+                {
+                    var generesToAdd = moviesGenresDictionary[m.ExternalId];
+                    Movie movie = new Movie() {Id = m.Id};
+
+                    foreach (var g in generesToAdd)
+                    {
+                        int genreId = genresFromDb.Where(gn => gn.Name == g.Name).Select(gn => gn.Id).FirstOrDefault();
+                        Genre genre = new Genre() {Id = genreId};
+
+                          db.Database.ExecuteSqlCommand("Insert into MovieGenres Values({0},{1})", genreId, movie.Id);
+                    }
+                }
+            }
+        }
+
+        // [TestMethod]
+        public void PopulateCastsLookupTableData()
+        {
+            TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\credits.csv");
+            var csv = new CsvReader(readFile);
+            csv.Configuration.BadDataFound = null;
+            csv.Configuration.ReadingExceptionOccurred = null;
+            var castsFromCsv = csv.GetRecords<dynamic>();
+            Dictionary<string, List<Cast>> movieCastDictionary = new Dictionary<string, List<Cast>>();
+            List<Cast> casts = new List<Cast>();
+            List<Cast> eachMovieCasts = new List<Cast>();
+            foreach (var c in castsFromCsv)
+            {
+                try
+                {
+                    JArray casteArray = JArray.Parse(c.casting);
+                    string movieid = c.id;
+                    foreach (var cast in casteArray)
+                    {
+                        var castings = JsonConvert.DeserializeObject<Cast>(cast.ToString());
+                        eachMovieCasts.Add(castings);
+                    }
+
+                    // movieCastDictionary.Add(movieid, eachMovieCasts);
+                }
+                catch (Exception e)
+                {
+                    //Console.WriteLine(c.id + ":: " + e.InnerException);
+                }
+            }
+
+            var distinctCasts = eachMovieCasts.GroupBy(x => x.ExternalId).Select(d => d.First()).ToList();
+
+
+            using (var tr = new TransactionScope(TransactionScopeOption.Required, new System.TimeSpan(0, 15, 0)))
+            {
+                Database.SetInitializer<MovieDbContext>(null);
+
+                using (var db = new MovieDbContext())
+                {
+                    db.Configuration.AutoDetectChangesEnabled = false;
+                    foreach (var c in distinctCasts)
+                    {
+                        db.Casts.Add(c);
+                    }
+
+                    db.SaveChanges();
+                }
+
+                tr.Complete();
+            }
+        }
+
+
+        public void PopulateMovieCastsTableData()
+        {
+
         }
     }
 }
