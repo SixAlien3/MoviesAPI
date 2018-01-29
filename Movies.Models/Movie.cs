@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +12,8 @@ namespace Movies.Models
     public class Movie : AuditableEntity
     {
         public string OriginalTitle { get; set; }
+        [Index(IsUnique = false)]
+        [StringLength(128)]
         public string Title { get; set; }
         public string Overview { get; set; }
         public string Tagline { get; set; }

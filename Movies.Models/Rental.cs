@@ -9,7 +9,6 @@ namespace Movies.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid OrderGuid { get; set; }
-
         public string CustomerId { get; set; }
         public decimal OrderTotal { get; set; }
         public DateTime RentalDateTime { get; set; }
