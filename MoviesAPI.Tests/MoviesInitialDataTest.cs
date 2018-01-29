@@ -133,7 +133,7 @@ namespace MoviesAPI.Tests
             }
         }
 
-         [TestMethod]
+        // [TestMethod]
         public void PopulateKeywordsLookupTableData()
         {
             TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\keywords.csv");
@@ -185,7 +185,6 @@ namespace MoviesAPI.Tests
                 scope.Complete();
             }
         }
-
 
         // [TestMethod]
         public void PopulateMovieGenresTableData()
