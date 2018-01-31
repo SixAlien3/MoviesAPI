@@ -6,8 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Transactions;
 using CsvHelper;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Movies.Data.Common;
+using Movies.Data.Infrastructure;
 using Movies.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -179,7 +181,7 @@ namespace MoviesAPI.Tests
                         db.Keywords.Add(gg);
                     }
 
-                   // db.SaveChanges();
+                    // db.SaveChanges();
                 }
 
                 scope.Complete();
@@ -392,6 +394,12 @@ namespace MoviesAPI.Tests
             }
 
             Assert.AreEqual(totalRecords, nonRecords);
+        }
+
+        // [TestMethod]
+        public void PupulateRandomUsersTableData()
+        {
+            
         }
     }
 }
