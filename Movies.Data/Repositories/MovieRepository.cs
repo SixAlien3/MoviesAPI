@@ -15,7 +15,7 @@ namespace Movies.Data.Repositories
         }
 
 
-        public void InsertMovieWithGenre(Movie movie)
+        public void InsertMovieWithGenres(Movie movie)
         {
             var genreIds = movie.Genres.Select(g => g.Id).ToList();
             movie.Genres = new List<Genre>();
@@ -33,6 +33,6 @@ namespace Movies.Data.Repositories
 
     public interface IMovieRepository : IRepository<Movie>
     {
-        void InsertMovieWithGenre(Movie movie);
+        void InsertMovieWithGenres(Movie movie);
     }
 }
