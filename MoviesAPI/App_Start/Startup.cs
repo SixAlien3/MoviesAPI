@@ -2,10 +2,10 @@
 using System.Web.Http;
 using Movies.Data.Common;
 using Movies.Data.Infrastructure;
+using MoviesAPI.Extensions;
 using Ninject.Web.Common.OwinHost;
 using Ninject.Web.WebApi.OwinHost;
 using Owin;
-using Swashbuckle.Application;
 
 namespace MoviesAPI
 {
@@ -28,7 +28,7 @@ namespace MoviesAPI
             app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
 
             Database.SetInitializer<MovieDbContext>(null);
-            // SwaggerConfig.Register(webApiConfiguration);
+          //  SwaggerConfig.Register(webApiConfiguration);
 
             app.UseNinjectMiddleware(NinjectConfig.CreateKernel);
             app.UseNinjectWebApi(webApiConfiguration);

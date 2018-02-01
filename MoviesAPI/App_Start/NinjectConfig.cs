@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Reflection;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Movies.Data.Common;
@@ -14,14 +15,15 @@ namespace MoviesAPI
         {
             var kernel = new StandardKernel();
             //Create the bindings
-   
-            kernel.Bind<IMovieRepository>().To<MovieRepository>();
+           // kernel.Load(Assembly.GetExecutingAssembly());
+
 
             kernel.Bind<IUserStore<ApplicationUser>>().To<UserStore<ApplicationUser>>();
             kernel.Bind<UserManager<ApplicationUser>>().ToSelf();
             kernel.Bind<IRoleStore<IdentityRole, string>>().To<RoleStore<IdentityRole>>();
             kernel.Bind<IUserRepository>().To<UserRepository>();
-      
+            kernel.Bind<IMovieRepository>().To<MovieRepository>();
+
 
             //kernel.Bind(typeof(IUserStore<>)).To(typeof(UserStore<>)).InRequestScope();
             kernel.Bind<DbContext>().To<MovieDbContext>();

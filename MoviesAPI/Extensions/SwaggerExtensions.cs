@@ -8,7 +8,7 @@ namespace MoviesAPI.Extensions
         public static HttpConfiguration EnableSwagger(this HttpConfiguration httpConfiguration)
         {
             httpConfiguration
-                .EnableSwagger(c => c.SingleApiVersion("v1", "Book Store API"))
+                .EnableSwagger(c => c.SingleApiVersion("v1", "Movie API"))
                 .EnableSwaggerUi();
             return httpConfiguration;
         }

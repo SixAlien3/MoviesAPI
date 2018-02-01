@@ -168,6 +168,8 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\GenreController.cs" />
+    <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Extensions\SwaggerExtensions.cs" />
     <Compile Include="Filters\AddChallengeOnUnauthorizedResult.cs" />
     <Compile Include="Filters\AuthenticationFailureResult.cs" />

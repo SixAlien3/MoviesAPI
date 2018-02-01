@@ -14,7 +14,6 @@ namespace MoviesAPI
             // Web API configuration and services
 
             // Web API routes
-            // Web API routes
             config.EnableCors();
 
             config.MapHttpAttributeRoutes();

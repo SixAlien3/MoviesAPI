@@ -3,13 +3,13 @@ using WebActivatorEx;
 using MoviesAPI;
 using Swashbuckle.Application;
 
-[assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
+//[assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
 namespace MoviesAPI
 {
     public class SwaggerConfig
     {
-        public static void Register()
+        public static void Register(HttpConfiguration config)
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;
 

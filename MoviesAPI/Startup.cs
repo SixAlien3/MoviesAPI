@@ -1,5 +1,4 @@
 ﻿using Microsoft.Owin;
-using MoviesAPI;
 using Owin;
 
 [assembly: OwinStartup(typeof(MoviesAPI.Startup))]

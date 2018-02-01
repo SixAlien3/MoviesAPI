@@ -10,7 +10,7 @@ namespace Movies.Data.Repositories
 {
     public class MovieRepository : Repository<Movie>, IMovieRepository
     {
-        protected MovieRepository(MovieDbContext context) : base(context)
+        public MovieRepository(MovieDbContext context) : base(context)
         {
         }
 
