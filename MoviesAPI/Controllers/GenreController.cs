@@ -4,43 +4,36 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Movies.Data.Repositories;
+using MoviesAPI.Filters;
 
 namespace MoviesAPI.Controllers
 {
+    [RoutePrefix("api/genres")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [JwtAuthentication]
     public class GenreController : ApiController
     {
         private readonly IMovieRepository _movieRepository;
+        private readonly IGenreRepository _genreRepository;
 
         // GET: api/Genre
-        public GenreController(IMovieRepository movieRepository)
+        public GenreController(IMovieRepository movieRepository, IGenreRepository genreRepository)
         {
             _movieRepository = movieRepository;
-        }
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
+            _genreRepository = genreRepository;
         }
 
-        // GET: api/Genre/5
-        public string Get(int id)
+        [HttpGet]
+        [Route("")]
+        public IHttpActionResult GellAllGenres()
         {
-            return "value";
-        }
-
-        // POST: api/Genre
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT: api/Genre/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/Genre/5
-        public void Delete(int id)
-        {
+            var genres = _genreRepository.GetAll().ToList();
+            var response = genres.Any()
+                ? Request.CreateResponse(HttpStatusCode.OK, genres)
+                : Request.CreateResponse(HttpStatusCode.NotFound, "No Genres Found");
+            return ResponseMessage(response) ;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace MoviesAPI.Infrastructure
         private const string Secret =
             "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
-        public static string GenerateToken(ApplicationUser user, ClaimsIdentity identity, int expireMinutes = 5)
+        public static string GenerateToken(ApplicationUser user, ClaimsIdentity identity, int expireDays = 5)
         {
             string username = user.UserName;
             var symmetricKey = Convert.FromBase64String(Secret);
@@ -33,7 +33,7 @@ namespace MoviesAPI.Infrastructure
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = now.AddDays(Convert.ToInt32(expireMinutes)),
+                Expires = now.AddDays(Convert.ToInt32(expireDays)),
 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey),
                     SecurityAlgorithms.HmacSha256Signature)

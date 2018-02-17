@@ -23,6 +23,7 @@ namespace MoviesAPI
             kernel.Bind<IRoleStore<IdentityRole, string>>().To<RoleStore<IdentityRole>>();
             kernel.Bind<IUserRepository>().To<UserRepository>();
             kernel.Bind<IMovieRepository>().To<MovieRepository>();
+            kernel.Bind<IGenreRepository>().To<GenreRepository>();
 
 
             //kernel.Bind(typeof(IUserStore<>)).To(typeof(UserStore<>)).InRequestScope();

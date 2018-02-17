@@ -8,11 +8,13 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using Movies.Data.Repositories;
 using Movies.Models;
+using MoviesAPI.Filters;
 
 namespace MoviesAPI.Controllers
 {
     [RoutePrefix("api/movies")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [JwtAuthentication]
     public class MoviesController : ApiController
     {
         private readonly IMovieRepository _movieRepository;
@@ -41,7 +43,7 @@ namespace MoviesAPI.Controllers
 
             Expression<Func<Movie, bool>> filter = movie => movie.Title.Contains(title);
 
-            var movies = _movieRepository.GetQueryableData(out totalCount, filter, OrderBy, null, skip,
+            var movies = _movieRepository.GetQueryableData(out totalCount, filter, OrderBy, "Genres", skip,
                 25);
             var response = movies.Any()
                 ? Request.CreateResponse(HttpStatusCode.OK, movies)

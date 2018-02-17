@@ -36,6 +36,7 @@ namespace MoviesAPI.Filters
                     new {Message = "Missing JWT Token"});
                 return;
             }
+
             if (string.IsNullOrEmpty(authorization.Parameter))
             {
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized,
@@ -100,6 +101,11 @@ namespace MoviesAPI.Filters
             username = null;
 
             var simplePrinciple = JwtManager.GetPrincipal(token);
+
+            if (simplePrinciple == null)
+            {
+                return null;
+            }
 
             if (!(simplePrinciple.Identity is ClaimsIdentity identity))
                 return null;
