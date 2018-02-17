@@ -10,15 +10,19 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Movies.Data.Common;
 using Movies.Data.Infrastructure;
+using Movies.Data.Repositories;
 using Movies.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RandomNameGeneratorLibrary;
 
 namespace MoviesAPI.Tests
 {
     [TestClass]
     public class MoviesInitialDataTest
     {
+        private readonly Random gen = new Random();
+
         //  [TestMethod]
         public void PopulateInitialMoviesTableData()
         {
@@ -399,7 +403,35 @@ namespace MoviesAPI.Tests
         // [TestMethod]
         public void PupulateRandomUsersTableData()
         {
-            
+            UserRepository repository = new UserRepository(MovieDbContext.Create(),
+                new ApplicationUserManager(new UserStore<ApplicationUser>(new MovieDbContext())),
+                new ApplicationRoleManager(new RoleStore<IdentityRole>(new MovieDbContext())));
+
+            var personGenerator = new PersonNameGenerator();
+            var randomNames = personGenerator.GenerateMultipleFirstAndLastNames(20);
+
+
+            foreach (var n in randomNames)
+            {
+                var names = n.Split(' ');
+                var user = new ApplicationUser()
+                {
+                    UserName = names[0] + names[1] + "@gmail.com",
+                    Email = names[0] + names[1] + "@gmail.com",
+                    FirstName = names[0],
+                    LastName = names[1],
+                    DateOfBirth = RandomDay()
+                };
+                var addUserResult = repository.CreatUserAsync(user, "Antra2018!").Result;
+            }
+
+            Assert.AreEqual(0, 0);
+        }
+        DateTime RandomDay()
+        {
+            DateTime start = new DateTime(1947, 1, 1);
+            int range = (DateTime.Today - start).Days;
+            return start.AddDays(gen.Next(range));
         }
     }
 }
