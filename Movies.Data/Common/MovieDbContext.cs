@@ -25,6 +25,8 @@ namespace Movies.Data.Common
         public DbSet<Cast> Casts { get; set; }
         public DbSet<Rental> Rentals { get; set; }
         public DbSet<Keyword> Keywords { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

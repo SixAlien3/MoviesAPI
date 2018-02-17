@@ -62,10 +62,12 @@
     <Compile Include="Common\Entity.cs" />
     <Compile Include="Common\IAuditableEntity.cs" />
     <Compile Include="Common\IEntity.cs" />
+    <Compile Include="Favorite.cs" />
     <Compile Include="Genre.cs" />
     <Compile Include="Keyword.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieCasts.cs" />
+    <Compile Include="Rating.cs" />
     <Compile Include="Rental.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

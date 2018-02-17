@@ -107,6 +107,18 @@
     <Compile Include="Migrations\201801291851226_AddingIndexes.Designer.cs">
       <DependentUpon>201801291851226_AddingIndexes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802172143441_AuditColumsChange.cs" />
+    <Compile Include="Migrations\201802172143441_AuditColumsChange.Designer.cs">
+      <DependentUpon>201802172143441_AuditColumsChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802172144422_FavoritesTable.cs" />
+    <Compile Include="Migrations\201802172144422_FavoritesTable.Designer.cs">
+      <DependentUpon>201802172144422_FavoritesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802172153307_RatingsTable.cs" />
+    <Compile Include="Migrations\201802172153307_RatingsTable.Designer.cs">
+      <DependentUpon>201802172153307_RatingsTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\MovieRepository.cs" />
@@ -143,6 +155,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801291851226_AddingIndexes.resx">
       <DependentUpon>201801291851226_AddingIndexes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802172143441_AuditColumsChange.resx">
+      <DependentUpon>201802172143441_AuditColumsChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802172144422_FavoritesTable.resx">
+      <DependentUpon>201802172144422_FavoritesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802172153307_RatingsTable.resx">
+      <DependentUpon>201802172153307_RatingsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
