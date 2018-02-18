@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -49,7 +50,38 @@ namespace MoviesAPI.Controllers
             var response = movies.Any()
                 ? Request.CreateResponse(HttpStatusCode.OK, movies)
                 : Request.CreateResponse(HttpStatusCode.NotFound, "No Movies Found");
-            response.Headers.Add("X-total-count", totalCount.ToString());
+            response.Headers.Add("X-Total-Count", totalCount.ToString());
+
+            return ResponseMessage(response);
+        }
+
+
+        [HttpGet]
+        [Route("genre/{genreid}/{page:int?}")]
+        public IHttpActionResult GetAllMoviesBygenre(int genreId, int? page = 1)
+        {
+            int totalCount = 0;
+            int pageSize = 25;
+            int skip;
+            if (page.HasValue && page > 1)
+            {
+                skip = (page.Value - 1) * pageSize;
+            }
+            else
+            {
+                skip = 0;
+            }
+
+            totalCount = _movieRepository.GetQueryable().Count(m => m.Genres.Any(g => g.Id == genreId));
+            var movies = totalCount > 0
+                ? _movieRepository.GetQueryable().Where(m => m.Genres.Any(g => g.Id == genreId)).Include(b => b.Genres)
+                    .OrderByDescending(o => o.Popularity)
+                    .Skip(skip).Take(pageSize)
+                : null;
+            var response = movies != null && movies.Any()
+                ? Request.CreateResponse(HttpStatusCode.OK, movies)
+                : Request.CreateResponse(HttpStatusCode.NotFound, "No Movies Found");
+            response.Headers.Add("X-Total-Count", totalCount.ToString());
 
             return ResponseMessage(response);
         }
