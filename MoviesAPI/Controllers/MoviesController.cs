@@ -28,14 +28,14 @@ namespace MoviesAPI.Controllers
 
         [HttpGet]
         [Route("{page:int?}")]
-        public HttpResponseMessage GetAllMovies(int? page = 0, string title = "")
+        public HttpResponseMessage GetAllMovies(int? page = 1, string title = "")
         {
-            int totalCount = 0;
-            int pageSize = 25;
+            const int pageSize = 25;
             int skip;
+
             if (page.HasValue && page > 1)
             {
-                skip = page.Value * pageSize;
+                skip = (page.Value - 1) * pageSize;
             }
             else
             {
@@ -44,11 +44,22 @@ namespace MoviesAPI.Controllers
 
             Expression<Func<Movie, bool>> filter = movie => movie.Title.Contains(title);
 
-            var movies = _movieRepository.GetQueryableData(out totalCount, filter, OrderBy, "Genres", skip,
-                25);
+            var movies = _movieRepository.GetQueryableData(out _, filter, OrderBy, "Genres", skip, pageSize);
             var response = movies.Any()
                 ? Request.CreateResponse(HttpStatusCode.OK, movies)
                 : Request.CreateResponse(HttpStatusCode.NotFound, "No Movies Found");
+            return response;
+        }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        public HttpResponseMessage GetMovieById(int id)
+        {
+            var movie = _movieRepository.GetById(id);
+
+            var response = movie != null
+                ? Request.CreateResponse(HttpStatusCode.OK, movie)
+                : Request.CreateResponse(HttpStatusCode.NotFound, "No Movie was found");
             return response;
         }
 
