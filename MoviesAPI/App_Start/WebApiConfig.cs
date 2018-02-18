@@ -40,6 +40,7 @@ namespace MoviesAPI
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver =
                 new CamelCasePropertyNamesContractResolver();
             config.Formatters.JsonFormatter.UseDataContractJsonSerializer = false;
+            config.Formatters.JsonFormatter.SerializerSettings.DateFormatString = "d MMMM, yyyy";
         }
     }
 }

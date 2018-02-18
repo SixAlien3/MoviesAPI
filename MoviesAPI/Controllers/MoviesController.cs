@@ -89,16 +89,14 @@ namespace MoviesAPI.Controllers
         [Route("{id:int}")]
         public HttpResponseMessage GetMovieById(int id)
         {
-            var movie = _movieRepository.GetById(id);
-
+            var movie = _movieRepository.FindByInclude(m => m.Id == id, m => m.Genres).FirstOrDefault();
             var response = movie != null
                 ? Request.CreateResponse(HttpStatusCode.OK, movie)
                 : Request.CreateResponse(HttpStatusCode.NotFound, "No Movie was found");
             return response;
         }
 
-       
-
+  
         [HttpPost]
         [Route("")]
         public HttpResponseMessage Post()

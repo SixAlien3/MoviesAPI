@@ -32,7 +32,7 @@ namespace MoviesAPI.Filters
 
             if (authorization == null || authorization.Scheme != "Bearer")
             {
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest,
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized,
                     new {Message = "Missing JWT Token"});
                 return;
             }
