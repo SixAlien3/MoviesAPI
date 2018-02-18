@@ -24,6 +24,7 @@ namespace MoviesAPI
             kernel.Bind<IUserRepository>().To<UserRepository>();
             kernel.Bind<IMovieRepository>().To<MovieRepository>();
             kernel.Bind<IGenreRepository>().To<GenreRepository>();
+            kernel.Bind<IFavoriteRepository>().To<FavoriteRepository>();
 
 
             //kernel.Bind(typeof(IUserStore<>)).To(typeof(UserStore<>)).InRequestScope();

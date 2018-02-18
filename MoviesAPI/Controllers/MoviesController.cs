@@ -31,7 +31,6 @@ namespace MoviesAPI.Controllers
         [Route("{page:int?}")]
         public IHttpActionResult GetAllMovies(int? page = 1, string title = "")
         {
-            int totalCount = 0;
             const int pageSize = 25;
             int skip;
 
@@ -46,7 +45,7 @@ namespace MoviesAPI.Controllers
 
             Expression<Func<Movie, bool>> filter = movie => movie.Title.Contains(title);
 
-            var movies = _movieRepository.GetQueryableData(out totalCount, filter, OrderBy, "Genres", skip, pageSize);
+            var movies = _movieRepository.GetQueryableData(out int totalCount, filter, OrderBy, "Genres", skip, pageSize);
             var response = movies.Any()
                 ? Request.CreateResponse(HttpStatusCode.OK, movies)
                 : Request.CreateResponse(HttpStatusCode.NotFound, "No Movies Found");
@@ -60,8 +59,8 @@ namespace MoviesAPI.Controllers
         [Route("genre/{genreid}/{page:int?}")]
         public IHttpActionResult GetAllMoviesBygenre(int genreId, int? page = 1)
         {
-            int totalCount = 0;
-            int pageSize = 25;
+            var totalCount = 0;
+            const int pageSize = 25;
             int skip;
             if (page.HasValue && page > 1)
             {
@@ -98,6 +97,8 @@ namespace MoviesAPI.Controllers
             return response;
         }
 
+       
+
         [HttpPost]
         [Route("")]
         public HttpResponseMessage Post()
@@ -105,7 +106,7 @@ namespace MoviesAPI.Controllers
             throw new NotImplementedException("This method is not implemented");
         }
 
-        private IOrderedQueryable<Movie> OrderBy(IQueryable<Movie> queryable)
+        private static IOrderedQueryable<Movie> OrderBy(IQueryable<Movie> queryable)
         {
             return queryable.OrderByDescending(b => b.Popularity);
         }
