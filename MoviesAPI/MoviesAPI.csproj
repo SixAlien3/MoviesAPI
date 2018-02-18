@@ -178,7 +178,10 @@
     <Compile Include="Filters\AuthenticationFailureResult.cs" />
     <Compile Include="Filters\HttpAuthenticationChallengeContextExtensions.cs" />
     <Compile Include="Filters\JwtAuthenticationAttribute.cs" />
+    <Compile Include="Filters\MoviesApiException.cs" />
+    <Compile Include="Filters\MoviesApiExceptionHandler.cs" />
     <Compile Include="Infrastructure\JwtManager.cs" />
+    <Compile Include="Infrastructure\MoviesApiExceptionLogger.cs" />
     <Compile Include="Models\CreateRoleBindingModel.cs" />
     <Compile Include="Models\CreateUserBindingModel.cs" />
     <Compile Include="Models\LoginModel.cs" />

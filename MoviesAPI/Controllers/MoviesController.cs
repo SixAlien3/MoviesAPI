@@ -19,7 +19,8 @@ namespace MoviesAPI.Controllers
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IUserRepository _userRepository;
-        public MoviesController( IUserRepository userRepository, IMovieRepository movieRepository)
+
+        public MoviesController(IUserRepository userRepository, IMovieRepository movieRepository)
         {
             _movieRepository = movieRepository;
             _userRepository = userRepository;
@@ -49,6 +50,13 @@ namespace MoviesAPI.Controllers
                 ? Request.CreateResponse(HttpStatusCode.OK, movies)
                 : Request.CreateResponse(HttpStatusCode.NotFound, "No Movies Found");
             return response;
+        }
+
+        [HttpPost]
+        [Route("")]
+        public HttpResponseMessage Post()
+        {
+            throw new NotImplementedException("This method is not implemented");
         }
 
         private IOrderedQueryable<Movie> OrderBy(IQueryable<Movie> queryable)

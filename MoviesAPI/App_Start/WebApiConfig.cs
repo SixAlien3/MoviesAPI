@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
+using MoviesAPI.Filters;
+using MoviesAPI.Infrastructure;
 using Newtonsoft.Json.Serialization;
 
 namespace MoviesAPI
@@ -15,6 +18,12 @@ namespace MoviesAPI
 
             // Web API routes
             config.EnableCors();
+            config.Filters.Add(new MoviesApiException());
+
+            //The handler, like the logger, must be registered in the Web API configuration. 
+            //Note that we can only have one Exception Handler per application.
+            config.Services.Replace(typeof(IExceptionHandler), new MoviesApiExceptionHandler());
+            config.Services.Replace(typeof(IExceptionLogger), new MoviesApiExceptionLogger());
 
             config.MapHttpAttributeRoutes();
 
