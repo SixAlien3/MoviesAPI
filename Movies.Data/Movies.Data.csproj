@@ -131,6 +131,14 @@
     <Compile Include="Migrations\201802191825229_PaymentTable.Designer.cs">
       <DependentUpon>201802191825229_PaymentTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802191850002_CrewTable.cs" />
+    <Compile Include="Migrations\201802191850002_CrewTable.Designer.cs">
+      <DependentUpon>201802191850002_CrewTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802191852499_MovieCrewTable.cs" />
+    <Compile Include="Migrations\201802191852499_MovieCrewTable.Designer.cs">
+      <DependentUpon>201802191852499_MovieCrewTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\FavoriteRepository.cs" />
@@ -187,6 +195,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802191825229_PaymentTable.resx">
       <DependentUpon>201802191825229_PaymentTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802191850002_CrewTable.resx">
+      <DependentUpon>201802191850002_CrewTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802191852499_MovieCrewTable.resx">
+      <DependentUpon>201802191852499_MovieCrewTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

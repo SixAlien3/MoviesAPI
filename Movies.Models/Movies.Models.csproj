@@ -63,11 +63,13 @@
     <Compile Include="Common\Entity.cs" />
     <Compile Include="Common\IAuditableEntity.cs" />
     <Compile Include="Common\IEntity.cs" />
+    <Compile Include="Crew.cs" />
     <Compile Include="Favorite.cs" />
     <Compile Include="Genre.cs" />
     <Compile Include="Keyword.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieCasts.cs" />
+    <Compile Include="MovieCrew.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Purchase.cs" />
     <Compile Include="Rating.cs" />

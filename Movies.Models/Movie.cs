@@ -57,6 +57,9 @@ namespace Movies.Models
 
         [JsonIgnore]
         public ICollection<MovieCasts> MovieCastses { get; set; }
+        [JsonIgnore]
+
+        public ICollection<MovieCrew> MovieCrews { get; set; }
 
         [JsonIgnore]
         public ICollection<Keyword> Keywords { get; set; }
