@@ -252,8 +252,8 @@ namespace MoviesAPI.Tests
         {
             TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\credits.csv");
             var csv = new CsvReader(readFile);
-            csv.Configuration.BadDataFound = null;
-            csv.Configuration.ReadingExceptionOccurred = null;
+            //csv.Configuration.BadDataFound = null;
+            //csv.Configuration.ReadingExceptionOccurred = null;
             var castsFromCsv = csv.GetRecords<dynamic>();
             Dictionary<string, List<Cast>> movieCastDictionary = new Dictionary<string, List<Cast>>();
             List<Cast> casts = new List<Cast>();
@@ -400,6 +400,134 @@ namespace MoviesAPI.Tests
             Assert.AreEqual(totalRecords, nonRecords);
         }
 
+        //[TestMethod]
+        public void PopulateCrewLookupTableData()
+        {
+            TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\crew.csv");
+            var csv = new CsvReader(readFile);
+            //csv.Configuration.BadDataFound = null;
+            //csv.Configuration.ReadingExceptionOccurred = null;
+            var crewsFromCsv = csv.GetRecords<dynamic>();
+            Dictionary<string, List<Crew>> moviecrewDictionary = new Dictionary<string, List<Crew>>();
+            List<Crew> crews = new List<Crew>();
+            List<Crew> eachMoviecrews = new List<Crew>();
+            foreach (var c in crewsFromCsv)
+            {
+                try
+                {
+                    JArray creweArray = JArray.Parse(c.crew);
+                    string movieid = c.id;
+                    foreach (var crew in creweArray)
+                    {
+                        // var crewings3 = JsonConvert.DeserializeObject<Cast>(crew.ToString());
+
+                        var crewings = JsonConvert.DeserializeObject<Crew>(crew.ToString());
+                        eachMoviecrews.Add(crewings);
+                    }
+
+                    // moviecrewDictionary.Add(movieid, eachMoviecrews);
+                }
+                catch (Exception e)
+                {
+                    //Console.WriteLine(c.id + ":: " + e.InnerException);
+                }
+            }
+
+            var distinctcrews = eachMoviecrews.GroupBy(x => x.ExternalId).Select(d => d.First()).ToList();
+
+
+            using (var tr = new TransactionScope(TransactionScopeOption.Required, new System.TimeSpan(0, 15, 0)))
+            {
+                Database.SetInitializer<MovieDbContext>(null);
+
+                using (var db = new MovieDbContext())
+                {
+                    db.Configuration.AutoDetectChangesEnabled = false;
+                    foreach (var c in distinctcrews)
+                    {
+                        db.Crews.Add(c);
+                    }
+
+                    db.SaveChanges();
+                }
+
+                tr.Complete();
+            }
+        }
+
+       // [TestMethod]
+        public void PopulateMovieCrewsTableData()
+        {
+            TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\crew.csv");
+            var csv = new CsvReader(readFile);
+            csv.Configuration.BadDataFound = null;
+            csv.Configuration.ReadingExceptionOccurred = null;
+            var CrewsFromCsv = csv.GetRecords<dynamic>();
+            Dictionary<string, List<Crew>> movieCrewDictionary = new Dictionary<string, List<Crew>>();
+            Dictionary<string, List<MovieCrew>> movieCrewDictionary2 = new Dictionary<string, List<MovieCrew>>();
+            List<Crew> Crews = new List<Crew>();
+            List<Movie> moviesFromDb;
+            int totalRecords = 0;
+            int nonRecords = 0;
+            foreach (var c in CrewsFromCsv)
+            {
+                try
+                {
+                    List<Crew> eachMovieCrews = new List<Crew>();
+                    List<MovieCrew> eachMovieCrews2 = new List<MovieCrew>();
+
+                    JArray CreweArray = JArray.Parse(c.crew);
+                    string movieid = c.id;
+                    foreach (var Crew in CreweArray)
+                    {
+                        var Crewings = JsonConvert.DeserializeObject<MovieCrew>(Crew.ToString());
+                        eachMovieCrews2.Add(Crewings);
+                    }
+
+                    movieCrewDictionary2.Add(movieid, eachMovieCrews2);
+                }
+                catch (Exception e)
+                {
+                    //Console.WriteLine(c.id + ":: " + e.InnerException);
+                }
+            }
+
+            Database.SetInitializer<MovieDbContext>(null);
+            using (var db = new MovieDbContext())
+            {
+                moviesFromDb = db.Movies.ToList();
+                Crews = db.Crews.ToList();
+            }
+
+            using (var db = new MovieDbContext())
+            {
+                List<MovieCrew> movieCrewses = new List<MovieCrew>();
+
+                foreach (var m in moviesFromDb)
+                {
+                    if (movieCrewDictionary2.ContainsKey(m.ExternalId.ToString()))
+                    {
+                        var CrewstoAdd = movieCrewDictionary2[m.ExternalId.ToString()];
+                        foreach (var g in CrewstoAdd)
+                        {
+                            try
+                            {
+                                int Crewid = Crews.Where(gn => gn.ExternalId == g.CrewId).Select(gn => gn.Id).FirstOrDefault();
+                                db.Database.ExecuteSqlCommand("Insert into MovieCrews Values({0},{1})", m.Id, Crewid);
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.WriteLine(e.Message);
+                            }
+                        }
+                    }
+                }
+            }
+
+            Assert.AreEqual(totalRecords, nonRecords);
+        }
+
+
         // [TestMethod]
         public void PupulateRandomUsersTableData()
         {
@@ -427,6 +555,8 @@ namespace MoviesAPI.Tests
 
             Assert.AreEqual(0, 0);
         }
+
+
         DateTime RandomDay()
         {
             DateTime start = new DateTime(1947, 1, 1);
