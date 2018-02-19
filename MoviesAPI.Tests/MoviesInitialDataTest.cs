@@ -455,7 +455,7 @@ namespace MoviesAPI.Tests
             }
         }
 
-       // [TestMethod]
+        // [TestMethod]
         public void PopulateMovieCrewsTableData()
         {
             TextReader readFile = new StreamReader(@"C:\Users\Abhil\Desktop\crew.csv");
@@ -512,7 +512,8 @@ namespace MoviesAPI.Tests
                         {
                             try
                             {
-                                int Crewid = Crews.Where(gn => gn.ExternalId == g.CrewId).Select(gn => gn.Id).FirstOrDefault();
+                                int Crewid = Crews.Where(gn => gn.ExternalId == g.CrewId).Select(gn => gn.Id)
+                                    .FirstOrDefault();
                                 db.Database.ExecuteSqlCommand("Insert into MovieCrews Values({0},{1})", m.Id, Crewid);
                             }
                             catch (Exception e)
@@ -526,7 +527,6 @@ namespace MoviesAPI.Tests
 
             Assert.AreEqual(totalRecords, nonRecords);
         }
-
 
         // [TestMethod]
         public void PupulateRandomUsersTableData()
