@@ -10,6 +10,7 @@ using System.Web.Http.Cors;
 using Movies.Data.Repositories;
 using Movies.Models;
 using MoviesAPI.Filters;
+using MoviesAPI.Infrastructure;
 
 namespace MoviesAPI.Controllers
 {
@@ -45,7 +46,8 @@ namespace MoviesAPI.Controllers
 
             Expression<Func<Movie, bool>> filter = movie => movie.Title.Contains(title);
 
-            var movies = _movieRepository.GetQueryableData(out int totalCount, filter, OrderBy, "Genres", skip, pageSize);
+            var movies =
+                _movieRepository.GetQueryableData(out int totalCount, filter, OrderBy, "Genres", skip, pageSize);
             var response = movies.Any()
                 ? Request.CreateResponse(HttpStatusCode.OK, movies)
                 : Request.CreateResponse(HttpStatusCode.NotFound, "No Movies Found");
@@ -96,7 +98,7 @@ namespace MoviesAPI.Controllers
             return response;
         }
 
-  
+
         [HttpPost]
         [Route("")]
         public HttpResponseMessage Post()

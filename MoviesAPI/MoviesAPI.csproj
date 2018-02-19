@@ -181,6 +181,8 @@
     <Compile Include="Filters\MoviesApiException.cs" />
     <Compile Include="Filters\MoviesApiExceptionHandler.cs" />
     <Compile Include="Infrastructure\JwtManager.cs" />
+    <Compile Include="Infrastructure\MovieApiConstants.cs" />
+    <Compile Include="Infrastructure\MovieApiHttpClient.cs" />
     <Compile Include="Infrastructure\MoviesApiExceptionLogger.cs" />
     <Compile Include="Models\CreateRoleBindingModel.cs" />
     <Compile Include="Models\CreateUserBindingModel.cs" />
