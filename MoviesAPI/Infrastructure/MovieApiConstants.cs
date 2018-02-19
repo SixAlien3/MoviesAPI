@@ -46,5 +46,12 @@ namespace MoviesAPI.Infrastructure
         // popular people https://api.themoviedb.org/3/person/popular?api_key=f260170a65522e5006559539ef75a2c2&language=en-US&page=1
 
         // Get Entity by imdbId https://api.themoviedb.org/3/find/tt3501632?api_key=f260170a65522e5006559539ef75a2c2&language=en-US&external_source=imdb_id
+
+        // Discover Movies by popularity https://api.themoviedb.org/3/discover/movie?api_key=f260170a65522e5006559539ef75a2c2&language=en-US&sort_by=popularity.desc&page=1
+        // Movies by Highest Rated By Certificate https://api.themoviedb.org/3/discover/movie/?api_key=f260170a65522e5006559539ef75a2c2&certification_country=US&certification=R&sort_by=vote_average.desc
+        // Best Movies By Year https://api.themoviedb.org/3/discover/movie?api_key=f260170a65522e5006559539ef75a2c2&language=en-US&primary_release_year=2010&sort_by=vote_average.desc
+        // Best Movies By Genre https://api.themoviedb.org/3/discover/movie?api_key=f260170a65522e5006559539ef75a2c2&language=en-US&with_genres=18&primary_release_year=2014
+        // Discover Movies by popularity https://api.themoviedb.org/3/discover/movie?api_key=f260170a65522e5006559539ef75a2c2&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1
+
     }
 }
