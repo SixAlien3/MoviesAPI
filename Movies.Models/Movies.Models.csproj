@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Address.cs" />
     <Compile Include="Cast.cs" />
     <Compile Include="ApplicationUser.cs" />
     <Compile Include="Common\AuditableEntity.cs" />
@@ -67,6 +68,8 @@
     <Compile Include="Keyword.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieCasts.cs" />
+    <Compile Include="Payment.cs" />
+    <Compile Include="Purchase.cs" />
     <Compile Include="Rating.cs" />
     <Compile Include="Rental.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

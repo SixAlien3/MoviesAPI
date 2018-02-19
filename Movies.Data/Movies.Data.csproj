@@ -123,6 +123,14 @@
     <Compile Include="Migrations\201802172258060_MoviesBackdropUrl.Designer.cs">
       <DependentUpon>201802172258060_MoviesBackdropUrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802191804159_AddressTable.cs" />
+    <Compile Include="Migrations\201802191804159_AddressTable.Designer.cs">
+      <DependentUpon>201802191804159_AddressTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802191825229_PaymentTable.cs" />
+    <Compile Include="Migrations\201802191825229_PaymentTable.Designer.cs">
+      <DependentUpon>201802191825229_PaymentTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\FavoriteRepository.cs" />
@@ -173,6 +181,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802172258060_MoviesBackdropUrl.resx">
       <DependentUpon>201802172258060_MoviesBackdropUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802191804159_AddressTable.resx">
+      <DependentUpon>201802191804159_AddressTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802191825229_PaymentTable.resx">
+      <DependentUpon>201802191825229_PaymentTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

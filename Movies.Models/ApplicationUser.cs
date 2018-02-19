@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
@@ -41,7 +42,6 @@ namespace Movies.Models
 
         [ScaffoldColumn(false)]
         [JsonIgnore]
-
         public string CreatedBy { get; set; }
 
         [ScaffoldColumn(false)]
@@ -51,6 +51,11 @@ namespace Movies.Models
         [ScaffoldColumn(false)]
         [JsonIgnore]
         public string UpdatedBy { get; set; }
+
+        public virtual Address BillingAddress { get; set; }
+        public virtual Address ShippingAddress { get; set; }
+
+        public virtual ICollection<Address> Addresses { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager,
             string authenticationType)

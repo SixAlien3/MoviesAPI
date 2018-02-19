@@ -8,12 +8,22 @@ namespace Movies.Models
     public class Rental : AuditableEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid OrderGuid { get; set; }
+        public Guid RentalNumber { get; set; }
+
         public string CustomerId { get; set; }
-        public decimal OrderTotal { get; set; }
+        public decimal TotalPrice { get; set; }
         public DateTime RentalDateTime { get; set; }
         public int RentalDurationHours { get; set; }
-        public DateTime RentalExpireDate { get; set; }
+
+        public bool IsRentalExpired
+        {
+            get
+            {
+                var timespan = DateTime.Now.Date.Subtract(RentalDateTime.Date);
+                return timespan.Minutes <= 0;
+            }
+        }
+
         public int MovieId { get; set; }
         public Movie Movie { get; set; }
 
