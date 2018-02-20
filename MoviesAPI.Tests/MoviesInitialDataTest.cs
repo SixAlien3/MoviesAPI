@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
+using System.Threading;
 using System.Transactions;
 using CsvHelper;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -28,6 +29,36 @@ namespace MoviesAPI.Tests
     public class MoviesInitialDataTest
     {
         private readonly Random gen = new Random();
+
+
+        [TestInitialize]
+        public void TestInitializeData()
+        {
+            //var startTimeSpan = TimeSpan.Zero;
+            //var periodTimeSpan = TimeSpan.FromSeconds(60);
+            //var timer = new System.Threading.Timer((e) => { TestMoviesGetMovieImages(); }, null, startTimeSpan,
+            //    periodTimeSpan);
+            Thread t = new Thread(ThreadFunc)
+            {
+                IsBackground = true,
+                Name = "Worker"
+            };
+            t.Start();
+        }
+        private  void ThreadFunc()
+        {
+            while (true)
+            {
+                Thread.Sleep(60000);
+                TestMoviesGetMovieImages();
+            }
+        }
+
+       // [TestMethod]
+        public void TestMethod33()
+        {
+            int x = 30;
+        }
 
         //  [TestMethod]
         public void PopulateInitialMoviesTableData()
@@ -584,15 +615,6 @@ namespace MoviesAPI.Tests
                     db.SaveChanges();
                 }
             }
-
-            var startTimeSpan = TimeSpan.Zero;
-            var periodTimeSpan = TimeSpan.FromSeconds(30);
-            var timer = new System.Threading.Timer((e) =>
-            {
-                TestMoviesGetMovieImages();
-            }, null, startTimeSpan, periodTimeSpan);
-
-
         }
 
 
