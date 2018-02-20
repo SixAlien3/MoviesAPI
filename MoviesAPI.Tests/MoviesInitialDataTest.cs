@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Transactions;
 using CsvHelper;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -15,6 +16,11 @@ using Movies.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RandomNameGeneratorLibrary;
+using TMDbLib.Client;
+using TMDbLib.Objects.General;
+using Crew = Movies.Models.Crew;
+using Genre = Movies.Models.Genre;
+using Keyword = Movies.Models.Keyword;
 
 namespace MoviesAPI.Tests
 {
@@ -554,6 +560,39 @@ namespace MoviesAPI.Tests
             }
 
             Assert.AreEqual(0, 0);
+        }
+
+        [TestMethod]
+        public void TestMoviesGetMovieImages()
+        {
+            Database.SetInitializer<MovieDbContext>(null);
+
+            using (var db = new MovieDbContext())
+            {
+                var moviesFromDb = db.Movies.Where(m => string.IsNullOrEmpty(m.BackdropUrl))
+                    .OrderByDescending(m => m.Popularity).Take(40).ToList();
+                foreach (var movie in moviesFromDb)
+                {
+                    var client = new TMDbClient("f260170a65522e5006559539ef75a2c2");
+                    var images = client.GetMovieImagesAsync(movie.ExternalId).Result;
+                    foreach (var img in images.Backdrops.OrderByDescending(b => b.VoteCount).Take(1))
+                    {
+                        movie.BackdropUrl = "https://image.tmdb.org/t/p/original/" + img.FilePath;
+                    }
+
+                    db.Entry(movie).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+
+            var startTimeSpan = TimeSpan.Zero;
+            var periodTimeSpan = TimeSpan.FromSeconds(30);
+            var timer = new System.Threading.Timer((e) =>
+            {
+                TestMoviesGetMovieImages();
+            }, null, startTimeSpan, periodTimeSpan);
+
+
         }
 
 
