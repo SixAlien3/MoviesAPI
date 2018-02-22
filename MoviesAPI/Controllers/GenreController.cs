@@ -12,7 +12,6 @@ namespace MoviesAPI.Controllers
 {
     [RoutePrefix("api/genres")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [JwtAuthentication]
     public class GenreController : ApiController
     {
         private readonly IMovieRepository _movieRepository;

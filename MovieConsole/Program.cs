@@ -52,22 +52,29 @@ namespace MovieConsole
 
                 foreach (var movie in moviesFromDb)
                 {
-                    var client = new TMDbClient("f260170a65522e5006559539ef75a2c2");
-                    var images = client.GetMovieImagesAsync(movie.ExternalId).Result;
-                    if (images.Backdrops != null)
+                    try
                     {
-                        try
+                        var client = new TMDbClient("f260170a65522e5006559539ef75a2c2");
+                        var images = client.GetMovieImagesAsync(movie.ExternalId).Result;
+                        if (images.Backdrops != null)
                         {
-                            foreach (var img in images.Backdrops.OrderByDescending(b => b.VoteCount).Take(1))
+                            try
                             {
-                                movie.BackdropUrl = "https://image.tmdb.org/t/p/original/" + img.FilePath;
+                                foreach (var img in images.Backdrops.OrderByDescending(b => b.VoteCount).Take(1))
+                                {
+                                    movie.BackdropUrl = "https://image.tmdb.org/t/p/original/" + img.FilePath;
+                                }
                             }
-                        }
-                        catch (Exception exception)
-                        {
-                            continue;
-                        }
+                            catch (Exception exception)
+                            {
+                                continue;
+                            }
                        
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        continue;
                     }
 
                     db.Entry(movie).State = EntityState.Modified;
