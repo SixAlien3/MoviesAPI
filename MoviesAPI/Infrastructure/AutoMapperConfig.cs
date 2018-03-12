@@ -57,9 +57,9 @@ namespace MoviesAPI.Infrastructure
             }
         }
 
-        public static List<Genre> GetAllMovieGenres(List<int> genreIds)
+        private static List<Genre> GetAllMovieGenres(List<int> genreIds)
         {
-            List<Genre> genres = new List<Genre>();
+            var genres = new List<Genre>();
             foreach (var g in genreIds)
             {
                 genres.Add(GetGenreById(g));
