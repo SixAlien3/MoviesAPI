@@ -5,18 +5,21 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Movies.Data.Repositories;
 using Movies.Models;
 using MoviesAPI.Filters;
 using MoviesAPI.Infrastructure;
+using TMDbLib.Objects.General;
+using TMDbLib.Objects.Search;
 
 namespace MoviesAPI.Controllers
 {
     [RoutePrefix("api/movies")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [JwtAuthentication]
+    //[JwtAuthentication]
     public class MoviesController : ApiController
     {
         private readonly IMovieRepository _movieRepository;
@@ -98,6 +101,12 @@ namespace MoviesAPI.Controllers
             return response;
         }
 
+        [HttpGet]
+        [Route("nowplaying")]
+        public async Task<IList<Movie>> GetNowPlayingMovies()
+        {
+            return await _movieRepository.GetNowPlaying();
+        }
 
         [HttpPost]
         [Route("")]

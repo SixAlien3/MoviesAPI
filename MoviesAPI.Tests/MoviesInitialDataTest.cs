@@ -591,7 +591,7 @@ namespace MoviesAPI.Tests
             Assert.AreEqual(0, 0);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void TestMoviesGetMovieImages()
         {
             Database.SetInitializer<MovieDbContext>(null);
