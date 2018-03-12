@@ -186,6 +186,7 @@
     <Compile Include="Filters\JwtAuthenticationAttribute.cs" />
     <Compile Include="Filters\MoviesApiException.cs" />
     <Compile Include="Filters\MoviesApiExceptionHandler.cs" />
+    <Compile Include="Infrastructure\AutoMapperConfig.cs" />
     <Compile Include="Infrastructure\JwtManager.cs" />
     <Compile Include="Infrastructure\MovieApiConstants.cs" />
     <Compile Include="Infrastructure\MovieApiHttpClient.cs" />

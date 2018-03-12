@@ -105,7 +105,9 @@ namespace MoviesAPI.Controllers
         [Route("nowplaying")]
         public async Task<IList<Movie>> GetNowPlayingMovies()
         {
-            return await _movieRepository.GetNowPlaying();
+            var tmdbMovies = await _movieRepository.GetNowPlaying();
+            var movies = AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results);
+            return movies;
         }
 
         [HttpPost]

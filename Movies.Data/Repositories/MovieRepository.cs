@@ -37,25 +37,28 @@ namespace Movies.Data.Repositories
             Context.SaveChanges();
         }
 
-        public async Task<IList<Movie>> GetNowPlaying()
+        public async Task<SearchContainerWithDates<SearchMovie>> GetNowPlaying()
         {
             var client = new TMDbClient(TmdbApiKey);
             var movies = await client.GetMovieNowPlayingListAsync();
 
-            var tmdbMovies = movies.Results;
 
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<SearchMovie, Movie>());
-            IMapper iMapper = config.CreateMapper();
-            var source = tmdbMovies;
-            var destination = iMapper.Map<IList<SearchMovie>, IList<Movie>>(source);
+            //var config = new MapperConfiguration(cfg =>
+            //    cfg.CreateMap<SearchMovie, Movie>().ForMember(dest => dest.AverageVote,
+            //        opts => opts.MapFrom(src => src.VoteAverage)));
+            //IMapper iMapper = config.CreateMapper();
+            //var source = tmdbMovies;
+            //var destination = iMapper.Map<IList<SearchMovie>, IList<Movie>>(source);
 
-            return destination;
+            return movies;
         }
+
+
     }
 
     public interface IMovieRepository : IRepository<Movie>
     {
         void InsertMovieWithGenres(Movie movie);
-        Task<IList<Movie>> GetNowPlaying();
+        Task<SearchContainerWithDates<SearchMovie>> GetNowPlaying();
     }
 }
