@@ -110,6 +110,15 @@ namespace MoviesAPI.Controllers
             return movies;
         }
 
+        [HttpGet]
+        [Route("upcoming")]
+        public async Task<IList<Movie>> GetUpcomingMovies()
+        {
+            var tmdbMovies = await _movieRepository.GetUpComing();
+            var movies = AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results);
+            return movies;
+        }
+
         [HttpPost]
         [Route("")]
         public HttpResponseMessage Post()

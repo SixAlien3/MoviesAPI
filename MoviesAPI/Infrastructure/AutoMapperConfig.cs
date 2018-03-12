@@ -19,8 +19,13 @@ namespace MoviesAPI.Infrastructure
 
             Mapper.Initialize((config) =>
             {
-                config.CreateMap<SearchMovie, Movie>().ForMember(dest => dest.AverageVote,
-                    opts => opts.MapFrom(src => src.VoteAverage));
+                config.CreateMap<SearchMovie, Movie>()
+                    .ForMember(dest => dest.AverageVote, opts => opts.MapFrom(src => src.VoteAverage))
+                    .ForMember(dest => dest.BackdropUrl,
+                        opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w1280//{src.BackdropPath}"))
+                    //.ForMember(dest => dest.Genres, opts => opts.MapFrom(src => src.GenreIds))
+                    .ForMember(dest => dest.PosterUrl,
+                        opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w342//{src.PosterPath}"));
             });
         }
     }

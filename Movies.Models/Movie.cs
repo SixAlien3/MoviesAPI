@@ -30,13 +30,9 @@ namespace Movies.Models
         public string TmdbId { get; set; }
 
         public string PosterUrl { get; set; }
-
-        [JsonIgnore]
         public string BackdropUrl { get; set; }
-
         public string OriginalLanguage { get; set; }
 
-        [JsonIgnore]
         public decimal Popularity { get; set; }
 
         public DateTime? ReleaseDate { get; set; }
@@ -57,6 +53,7 @@ namespace Movies.Models
 
         [JsonIgnore]
         public ICollection<MovieCasts> MovieCastses { get; set; }
+
         [JsonIgnore]
 
         public ICollection<MovieCrew> MovieCrews { get; set; }
