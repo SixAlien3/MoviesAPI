@@ -31,6 +31,8 @@ namespace Movies.Data.Common
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<Crew> Crews { get; set; }
+        public DbSet<Trailer> Trailers { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

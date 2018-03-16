@@ -70,6 +70,13 @@ namespace Movies.Data.Repositories
             var movie = await client.GetMovieAsync(tmdbId);
             return movie;
         }
+
+        public async Task<ResultContainer<Video>> GetMovieVideosAsync(int tmdbId)
+        {
+            var client = new TMDbClient(TmdbApiKey);
+            var movie = await client.GetMovieVideosAsync(tmdbId);
+            return movie;
+        }
     }
 
     public interface IMovieRepository : IRepository<Movie>
@@ -80,6 +87,6 @@ namespace Movies.Data.Repositories
         Task<SearchContainer<SearchMovie>> GetTopRatedMovies();
         Task<SearchContainer<SearchMovie>> GetPopularMovies();
         Task<TMDbLib.Objects.Movies.Movie> GetMovieDetailsFromTmdb(int tmdbId);
-
+        Task<ResultContainer<Video>> GetMovieVideosAsync(int tmdbId);
     }
 }

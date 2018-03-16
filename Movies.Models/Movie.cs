@@ -60,5 +60,7 @@ namespace Movies.Models
 
         [JsonIgnore]
         public ICollection<Keyword> Keywords { get; set; }
+
+        public ICollection<Trailer> Trailers { get; set; }
     }
 }
