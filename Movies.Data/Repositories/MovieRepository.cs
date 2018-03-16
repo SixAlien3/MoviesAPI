@@ -50,6 +50,19 @@ namespace Movies.Data.Repositories
             var movies = await client.GetMovieUpcomingListAsync();
             return movies;
         }
+
+        public async Task<SearchContainer<SearchMovie>> GetTopRatedMovies()
+        {
+            var client = new TMDbClient(TmdbApiKey);
+            var movies = await client.GetMovieTopRatedListAsync();
+            return movies;
+        }
+        public async Task<SearchContainer<SearchMovie>> GetPopularMovies()
+        {
+            var client = new TMDbClient(TmdbApiKey);
+            var movies = await client.GetMoviePopularListAsync();
+            return movies;
+        }
     }
 
     public interface IMovieRepository : IRepository<Movie>
@@ -57,6 +70,7 @@ namespace Movies.Data.Repositories
         void InsertMovieWithGenres(Movie movie);
         Task<SearchContainerWithDates<SearchMovie>> GetNowPlaying();
         Task<SearchContainerWithDates<SearchMovie>> GetUpComing();
-        
+        Task<SearchContainer<SearchMovie>> GetTopRatedMovies();
+        Task<SearchContainer<SearchMovie>> GetPopularMovies();
     }
 }

@@ -35,7 +35,7 @@ namespace MoviesAPI.Controllers
         [Route("{page:int?}")]
         public IHttpActionResult GetAllMovies(int? page = 1, string title = "")
         {
-            const int pageSize = 25;
+            const int pageSize = 24;
             int skip;
 
             if (page.HasValue && page > 1)
@@ -65,7 +65,7 @@ namespace MoviesAPI.Controllers
         public IHttpActionResult GetAllMoviesBygenre(int genreId, int? page = 1)
         {
             var totalCount = 0;
-            const int pageSize = 25;
+            const int pageSize = 24;
             int skip;
             if (page.HasValue && page > 1)
             {
@@ -116,6 +116,25 @@ namespace MoviesAPI.Controllers
         {
             var tmdbMovies = await _movieRepository.GetUpComing();
             var movies = AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results);
+            return movies;
+        }
+
+        [HttpGet]
+        [Route("top")]
+        public async Task<IList<Movie>> GetTopMovies()
+        {
+            var tmdbMovies = await _movieRepository.GetTopRatedMovies();
+            var movies = AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results).Where(m => m.OriginalLanguage == "en").ToList();
+            
+            return movies;
+        }
+        [HttpGet]
+        [Route("popular")]
+        public async Task<IList<Movie>> GetPopularMovies()
+        {
+            var tmdbMovies = await _movieRepository.GetPopularMovies();
+            var movies = AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results).Where(m => m.OriginalLanguage == "en").ToList();
+            
             return movies;
         }
 
