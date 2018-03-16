@@ -13,21 +13,32 @@ namespace MoviesAPI.Infrastructure
     {
         public static void RegisterMappings()
         {
-            //var config = new MapperConfiguration(cfg =>
-            //    cfg.CreateMap<SearchMovie, Movie>().ForMember(dest => dest.AverageVote,
-            //        opts => opts.MapFrom(src => src.VoteAverage)));
-            //IMapper iMapper = config.CreateMapper();
-
             Mapper.Initialize((config) =>
-            {
-                config.CreateMap<SearchMovie, Movie>()
-                    .ForMember(dest => dest.AverageVote, opts => opts.MapFrom(src => src.VoteAverage))
-                    .ForMember(dest => dest.BackdropUrl,
-                        opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w1280//{src.BackdropPath}"))
-                    .ForMember(dest => dest.Genres, opts => opts.ResolveUsing(src => GetAllMovieGenres(src.GenreIds) ))
-                    .ForMember(dest => dest.PosterUrl,
-                        opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w342//{src.PosterPath}"));
-            });
+                {
+                    http://www.imdb.com/title/
+
+                    config.CreateMap<SearchMovie, Movie>()
+                        .ForMember(dest => dest.AverageVote, opts => opts.MapFrom(src => src.VoteAverage))
+                        .ForMember(dest => dest.ExternalId, opts => opts.MapFrom(src => src.Id))
+                        .ForMember(dest => dest.BackdropUrl,
+                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w1280/{src.BackdropPath}"))
+                        .ForMember(dest => dest.Genres,
+                            opts => opts.ResolveUsing(src => GetAllMovieGenres(src.GenreIds)))
+                        .ForMember(dest => dest.PosterUrl,
+                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w342/{src.PosterPath}"));
+
+                    config.CreateMap<TMDbLib.Objects.Movies.Movie, Movie>()
+                        .ForMember(dest => dest.AverageVote, opts => opts.MapFrom(src => src.VoteAverage))
+                        .ForMember(dest => dest.ExternalId, opts => opts.MapFrom(src => src.Id))
+                        .ForMember(dest => dest.ImdbId, opts => opts.MapFrom(src => $"http://www.imdb.com/title/{src.ImdbId}"))
+                        .ForMember(dest => dest.BackdropUrl,
+                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w1280/{src.BackdropPath}"))
+                        .ForMember(dest => dest.Genres,
+                            opts => opts.ResolveUsing(src => ConvertTmdbGenresToCustomGenres(src.Genres)))
+                        .ForMember(dest => dest.PosterUrl,
+                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w342/{src.PosterPath}"));
+                }
+            );
         }
 
         private static Genre GetGenreById(int tmdbGenreId)
@@ -57,15 +68,41 @@ namespace MoviesAPI.Infrastructure
             }
         }
 
-        private static List<Genre> GetAllMovieGenres(List<int> genreIds)
+        private static List<Genre> GetAllMovieGenres(IEnumerable<int> genreIds)
         {
-            var genres = new List<Genre>();
-            foreach (var g in genreIds)
-            {
-                genres.Add(GetGenreById(g));
-            }
+            return genreIds.Select(GetGenreById).ToList();
+        }
 
-            return genres;
+        private static List<Genre> ConvertTmdbGenresToCustomGenres(
+            IReadOnlyCollection<TMDbLib.Objects.General.Genre> genres)
+        {
+            return GetAllGenres().Where(g => genres.Any(g2 => g2.Name == g.Name)).ToList();
+        }
+
+        private static IEnumerable<Genre> GetAllGenres()
+        {
+            return new List<Genre>()
+            {
+                new Genre() {Id = 6, Name = "Action"},
+                new Genre() {Id = 1, Name = "Adventure"},
+                new Genre() {Id = 3, Name = "Animation"},
+                new Genre() {Id = 7, Name = "Comedy"},
+                new Genre() {Id = 11, Name = "Crime"},
+                new Genre() {Id = 12, Name = "Documentary"},
+                new Genre() {Id = 4, Name = "Drama"},
+                new Genre() {Id = 17, Name = "Family"},
+                new Genre() {Id = 2, Name = "Fantasy"},
+                new Genre() {Id = 8, Name = "History"},
+                new Genre() {Id = 5, Name = "Horror"},
+                new Genre() {Id = 15, Name = "Music"},
+                new Genre() {Id = 14, Name = "Mystery"},
+                new Genre() {Id = 16, Name = "Romance"},
+                new Genre() {Id = 13, Name = "Science Fiction"},
+                new Genre() {Id = 20, Name = "TV Movie"},
+                new Genre() {Id = 10, Name = "Thriller"},
+                new Genre() {Id = 18, Name = "War"},
+                new Genre() {Id = 9, Name = "Western"}
+            };
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Movies.Models
         [JsonIgnore]
         public int? VoteCount { get; set; }
 
-        [JsonIgnore]
+        
         public int ExternalId { get; set; }
 
         public ICollection<Genre> Genres { get; set; }

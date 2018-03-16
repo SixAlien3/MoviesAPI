@@ -102,6 +102,18 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpGet]
+        [Route("details/{tmdbId:int}")]
+        public async Task<IHttpActionResult> GetMovieByTmdbId(int tmdbId)
+        {
+            var movie = await _movieRepository.GetMovieDetailsFromTmdb(tmdbId);
+            var response = movie != null
+                ? Request.CreateResponse(HttpStatusCode.OK, AutoMapper.Mapper.Map<TMDbLib.Objects.Movies.Movie, Movie>(movie))
+                : Request.CreateResponse(HttpStatusCode.NotFound, "No Movie on tmdb was found");
+            
+            return ResponseMessage(response);
+        }
+
+        [HttpGet]
         [Route("nowplaying")]
         public async Task<IList<Movie>> GetNowPlayingMovies()
         {
