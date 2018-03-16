@@ -12,14 +12,8 @@ namespace Movies.Models
     {
         public string Url { get; set; }
         public string Type { get; set; }
-
-        [JsonProperty("site")]
         public string Site { get; set; }
-
-        [JsonProperty("key")]
         public string Key { get; set; }
-
-        [JsonProperty("name")]
         public string Name { get; set; }
     }
 }

@@ -5,7 +5,9 @@ using System.Web;
 using System.Web.UI;
 using AutoMapper;
 using Movies.Models;
+using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
+using Genre = Movies.Models.Genre;
 
 namespace MoviesAPI.Infrastructure
 {
@@ -15,8 +17,6 @@ namespace MoviesAPI.Infrastructure
         {
             Mapper.Initialize((config) =>
                 {
-                    http://www.imdb.com/title/
-
                     config.CreateMap<SearchMovie, Movie>()
                         .ForMember(dest => dest.AverageVote, opts => opts.MapFrom(src => src.VoteAverage))
                         .ForMember(dest => dest.ExternalId, opts => opts.MapFrom(src => src.Id))
@@ -30,13 +30,21 @@ namespace MoviesAPI.Infrastructure
                     config.CreateMap<TMDbLib.Objects.Movies.Movie, Movie>()
                         .ForMember(dest => dest.AverageVote, opts => opts.MapFrom(src => src.VoteAverage))
                         .ForMember(dest => dest.ExternalId, opts => opts.MapFrom(src => src.Id))
-                        .ForMember(dest => dest.ImdbId, opts => opts.MapFrom(src => $"http://www.imdb.com/title/{src.ImdbId}"))
+                        .ForMember(dest => dest.ImdbId,
+                            opts => opts.MapFrom(src => $"http://www.imdb.com/title/{src.ImdbId}"))
                         .ForMember(dest => dest.BackdropUrl,
                             opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w1280/{src.BackdropPath}"))
                         .ForMember(dest => dest.Genres,
                             opts => opts.ResolveUsing(src => ConvertTmdbGenresToCustomGenres(src.Genres)))
                         .ForMember(dest => dest.PosterUrl,
                             opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w342/{src.PosterPath}"));
+
+                    config.CreateMap<Video, Trailer>()
+                        .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Key))
+                        .ForMember(dest => dest.Site, opts => opts.MapFrom(src => src.Site))
+                        .ForMember(dest => dest.Id, opts => opts.Ignore())
+                        .ForMember(dest => dest.Url,
+                            opts => opts.MapFrom(src => $"https://www.youtube.com/watch?v={src.Key}"));
                 }
             );
         }

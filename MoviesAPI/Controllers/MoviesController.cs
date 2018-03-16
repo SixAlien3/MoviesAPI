@@ -107,9 +107,10 @@ namespace MoviesAPI.Controllers
         {
             var movie = await _movieRepository.GetMovieDetailsFromTmdb(tmdbId);
             var response = movie != null
-                ? Request.CreateResponse(HttpStatusCode.OK, AutoMapper.Mapper.Map<TMDbLib.Objects.Movies.Movie, Movie>(movie))
+                ? Request.CreateResponse(HttpStatusCode.OK,
+                    AutoMapper.Mapper.Map<TMDbLib.Objects.Movies.Movie, Movie>(movie))
                 : Request.CreateResponse(HttpStatusCode.NotFound, "No Movie on tmdb was found");
-            
+
             return ResponseMessage(response);
         }
 
@@ -117,14 +118,13 @@ namespace MoviesAPI.Controllers
         [Route("videos/{tmdbId:int}")]
         public async Task<IHttpActionResult> GetMovieVideosByTmdbId(int tmdbId)
         {
-            var movie = await _movieRepository.GetMovieVideosAsync(tmdbId);
-            //var response = movie != null
-            //    ? Request.CreateResponse(HttpStatusCode.OK, AutoMapper.Mapper.Map<TMDbLib.Objects.Movies.Movie, Movie>(movie))
-            //    : Request.CreateResponse(HttpStatusCode.NotFound, "No Movie on tmdb was found");
+            var trailers = await _movieRepository.GetMovieVideosAsync(tmdbId);
+            var response = trailers != null
+                ? Request.CreateResponse(HttpStatusCode.OK,
+                    AutoMapper.Mapper.Map<List<Video>, List<Trailer>>(trailers.Results))
+                : Request.CreateResponse(HttpStatusCode.NotFound, "No Movie trailers were found");
 
-            //return ResponseMessage(response);
-           // TMDbLib.Objects.General.Video
-            return null;
+            return ResponseMessage(response);
         }
 
         [HttpGet]
@@ -150,17 +150,20 @@ namespace MoviesAPI.Controllers
         public async Task<IList<Movie>> GetTopMovies()
         {
             var tmdbMovies = await _movieRepository.GetTopRatedMovies();
-            var movies = AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results).Where(m => m.OriginalLanguage == "en").ToList();
-            
+            var movies = AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results)
+                .Where(m => m.OriginalLanguage == "en").ToList();
+
             return movies;
         }
+
         [HttpGet]
         [Route("popular")]
         public async Task<IList<Movie>> GetPopularMovies()
         {
             var tmdbMovies = await _movieRepository.GetPopularMovies();
-            var movies = AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results).Where(m => m.OriginalLanguage == "en").ToList();
-            
+            var movies = AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results)
+                .Where(m => m.OriginalLanguage == "en").ToList();
+
             return movies;
         }
 
