@@ -28,7 +28,7 @@ namespace MoviesAPI.Controllers
         [Route("")]
         public IHttpActionResult GellAllGenres()
         {
-            var genres = _genreRepository.GetAll().ToList();
+            var genres = _genreRepository.GetAll().OrderBy(g=>g.Name).ToList();
             var response = genres.Any()
                 ? Request.CreateResponse(HttpStatusCode.OK, genres)
                 : Request.CreateResponse(HttpStatusCode.NotFound, "No Genres Found");
