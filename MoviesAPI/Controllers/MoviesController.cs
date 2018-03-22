@@ -141,7 +141,7 @@ namespace MoviesAPI.Controllers
         public async Task<IList<Movie>> GetUpcomingMovies()
         {
             var tmdbMovies = await _movieRepository.GetUpComing();
-            var movies = AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results);
+            var movies = AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results.Where(m=>m.ReleaseDate> DateTime.Now).ToList());
             return movies;
         }
 

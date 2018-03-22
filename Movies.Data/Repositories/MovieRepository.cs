@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
 using Movies.Data.Common;
 using Movies.Models;
 using TMDbLib.Client;
@@ -15,10 +12,12 @@ namespace Movies.Data.Repositories
 {
     public class MovieRepository : Repository<Movie>, IMovieRepository
     {
+        private readonly TMDbClient _client;
         private const string TmdbApiKey = "f260170a65522e5006559539ef75a2c2";
 
         public MovieRepository(MovieDbContext context) : base(context)
         {
+            _client = new TMDbClient(TmdbApiKey) {DefaultCountry = "us"};
         }
 
 
@@ -39,42 +38,37 @@ namespace Movies.Data.Repositories
 
         public async Task<SearchContainerWithDates<SearchMovie>> GetNowPlaying()
         {
-            var client = new TMDbClient(TmdbApiKey);
-            var movies = await client.GetMovieNowPlayingListAsync();
+            var movies = await _client.GetMovieNowPlayingListAsync(region: "us");
             return movies;
         }
 
         public async Task<SearchContainerWithDates<SearchMovie>> GetUpComing()
         {
-            var client = new TMDbClient(TmdbApiKey);
-            var movies = await client.GetMovieUpcomingListAsync();
+            var movies = await _client.GetMovieUpcomingListAsync(region:"us");
             return movies;
         }
 
         public async Task<SearchContainer<SearchMovie>> GetTopRatedMovies()
         {
-            var client = new TMDbClient(TmdbApiKey);
-            var movies = await client.GetMovieTopRatedListAsync();
+            var movies = await _client.GetMovieTopRatedListAsync(region: "us");
             return movies;
         }
+
         public async Task<SearchContainer<SearchMovie>> GetPopularMovies()
         {
-            var client = new TMDbClient(TmdbApiKey);
-            var movies = await client.GetMoviePopularListAsync();
+            var movies = await _client.GetMoviePopularListAsync(region: "us");
             return movies;
         }
 
         public async Task<TMDbLib.Objects.Movies.Movie> GetMovieDetailsFromTmdb(int tmdbId)
         {
-            var client = new TMDbClient(TmdbApiKey);
-            var movie = await client.GetMovieAsync(tmdbId);
+            var movie = await _client.GetMovieAsync(tmdbId);
             return movie;
         }
 
         public async Task<ResultContainer<Video>> GetMovieVideosAsync(int tmdbId)
         {
-            var client = new TMDbClient(TmdbApiKey);
-            var movie = await client.GetMovieVideosAsync(tmdbId);
+            var movie = await _client.GetMovieVideosAsync(tmdbId);
             return movie;
         }
     }
