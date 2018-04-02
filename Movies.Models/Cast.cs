@@ -13,7 +13,7 @@ namespace Movies.Models
     {
         public string Name { get; set; }
         public string Gender { get; set; }
-
+        public int Order { get; set; }
         [JsonProperty("id")]
         public int ExternalId { get; set; }
 

@@ -69,7 +69,8 @@ namespace MoviesAPI.Infrastructure
                     Gender = crew.Gender.ToString(),
                     ExternalId = crew.Id,
                     Department = crew.Department,
-                    Job = crew.Job
+                    Job = crew.Job,
+                    Name = crew.Name
                 });
             }
 
@@ -88,7 +89,8 @@ namespace MoviesAPI.Infrastructure
                         : $"http://image.tmdb.org/t/p/w185/{cast.ProfilePath}",
                     Name = cast.Name,
                     Gender = cast.Gender.ToString(),
-                    ExternalId = cast.Id
+                    ExternalId = cast.Id,
+                    Order = cast.Order
                 });
             }
 

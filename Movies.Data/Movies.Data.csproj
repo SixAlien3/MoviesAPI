@@ -167,6 +167,10 @@
     <Compile Include="Migrations\201803161746075_TrailersToMovie.Designer.cs">
       <DependentUpon>201803161746075_TrailersToMovie.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804022047144_OrderToCast.cs" />
+    <Compile Include="Migrations\201804022047144_OrderToCast.Designer.cs">
+      <DependentUpon>201804022047144_OrderToCast.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CastRepository.cs" />
@@ -233,6 +237,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803161746075_TrailersToMovie.resx">
       <DependentUpon>201803161746075_TrailersToMovie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804022047144_OrderToCast.resx">
+      <DependentUpon>201804022047144_OrderToCast.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
