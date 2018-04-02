@@ -12,6 +12,7 @@ using Movies.Data.Repositories;
 using Movies.Models;
 using MoviesAPI.Filters;
 using MoviesAPI.Infrastructure;
+using MoviesAPI.Models;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
 
@@ -110,6 +111,19 @@ namespace MoviesAPI.Controllers
                 ? Request.CreateResponse(HttpStatusCode.OK,
                     AutoMapper.Mapper.Map<TMDbLib.Objects.Movies.Movie, Movie>(movie))
                 : Request.CreateResponse(HttpStatusCode.NotFound, "No Movie on tmdb was found");
+
+            return ResponseMessage(response);
+        }
+
+        [HttpGet]
+        [Route("credits/{tmdbId:int}")]
+        public async Task<IHttpActionResult> GetMovieCreditsByTmdbId(int tmdbId)
+        {
+            var credits = await _movieRepository.GetCastsForMovie(tmdbId);
+            var response = credits != null
+                ? Request.CreateResponse(HttpStatusCode.OK,
+                    AutoMapper.Mapper.Map<TMDbLib.Objects.Movies.Credits, Credits>(credits))
+                : Request.CreateResponse(HttpStatusCode.NotFound, "No casts on tmdb was found");
 
             return ResponseMessage(response);
         }

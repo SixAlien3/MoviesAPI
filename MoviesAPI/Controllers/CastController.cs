@@ -26,17 +26,6 @@ namespace MoviesAPI.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet]
-        [Route("movie/{tmdbId:int}")]
-        public async Task<IHttpActionResult> GetMovieVideosByTmdbId(int tmdbId)
-        {
-            var credits = await _castRepository.GetCastsForMovie(tmdbId);
-            var response = credits != null
-                ? Request.CreateResponse(HttpStatusCode.OK,
-                    AutoMapper.Mapper.Map<TMDbLib.Objects.Movies.Credits, Credits>(credits))
-                : Request.CreateResponse(HttpStatusCode.NotFound, "No casts on tmdb was found");
-
-            return ResponseMessage(response);
-        }
+        
     }
 }

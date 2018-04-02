@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Movies.Data.Common;
-using Movies.Models;
 using TMDbLib.Client;
 using TMDbLib.Objects.General;
+using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
 using Genre = Movies.Models.Genre;
+using Movie = Movies.Models.Movie;
 
 namespace Movies.Data.Repositories
 {
@@ -71,6 +72,12 @@ namespace Movies.Data.Repositories
             var movie = await _client.GetMovieVideosAsync(tmdbId);
             return movie;
         }
+
+        public async Task<Credits> GetCastsForMovie(int tmdbId)
+        {
+            var credits = await _client.GetMovieCreditsAsync(tmdbId);
+            return credits;
+        }
     }
 
     public interface IMovieRepository : IRepository<Movie>
@@ -82,5 +89,6 @@ namespace Movies.Data.Repositories
         Task<SearchContainer<SearchMovie>> GetPopularMovies();
         Task<TMDbLib.Objects.Movies.Movie> GetMovieDetailsFromTmdb(int tmdbId);
         Task<ResultContainer<Video>> GetMovieVideosAsync(int tmdbId);
+        Task<TMDbLib.Objects.Movies.Credits> GetCastsForMovie(int tmdbId);
     }
 }
