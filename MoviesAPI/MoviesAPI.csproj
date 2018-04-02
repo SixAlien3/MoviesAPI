@@ -209,6 +209,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\CastController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\GenreController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="Infrastructure\MoviesApiExceptionLogger.cs" />
     <Compile Include="Models\CreateRoleBindingModel.cs" />
     <Compile Include="Models\CreateUserBindingModel.cs" />
+    <Compile Include="Models\Credits.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ModelFactory.cs" />
     <Compile Include="Models\UserModel.cs" />

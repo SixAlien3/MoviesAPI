@@ -5,8 +5,10 @@ using System.Web;
 using System.Web.UI;
 using AutoMapper;
 using Movies.Models;
+using MoviesAPI.Models;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
+using Crew = Movies.Models.Crew;
 using Genre = Movies.Models.Genre;
 
 namespace MoviesAPI.Infrastructure
@@ -45,8 +47,52 @@ namespace MoviesAPI.Infrastructure
                         .ForMember(dest => dest.Id, opts => opts.Ignore())
                         .ForMember(dest => dest.Url,
                             opts => opts.MapFrom(src => $"https://www.youtube.com/watch?v={src.Key}"));
+
+                    config.CreateMap<TMDbLib.Objects.Movies.Credits, Credits>()
+                        .ForMember(dest => dest.Cast, opts => opts.ResolveUsing(src => ConvertProfilePath(src.Cast)))
+                        .ForMember(dest => dest.Crew,
+                            opts => opts.ResolveUsing(src => ConvertProfilePathCrew(src.Crew)));
                 }
             );
+        }
+
+        private static List<Movies.Models.Crew> ConvertProfilePathCrew(List<TMDbLib.Objects.General.Crew> srcCrew)
+        {
+            var casts = new List<Crew>();
+            foreach (var crew in srcCrew)
+            {
+                casts.Add(new Crew()
+                {
+                    ProfilePath = string.IsNullOrEmpty(crew.ProfilePath)
+                        ? string.Empty
+                        : $"http://image.tmdb.org/t/p/w185/{crew.ProfilePath}",
+                    Gender = crew.Gender.ToString(),
+                    ExternalId = crew.Id,
+                    Department = crew.Department,
+                    Job = crew.Job
+                });
+            }
+
+            return casts;
+        }
+
+        private static List<Cast> ConvertProfilePath(List<TMDbLib.Objects.Movies.Cast> srcCast)
+        {
+            var casts = new List<Cast>();
+            foreach (var cast in srcCast)
+            {
+                casts.Add(new Cast()
+                {
+                    ProfilePath = string.IsNullOrEmpty(cast.ProfilePath)
+                        ? string.Empty
+                        : $"http://image.tmdb.org/t/p/w185/{cast.ProfilePath}",
+                    Name = cast.Name,
+                    Gender = cast.Gender.ToString(),
+                    ExternalId = cast.Id
+                });
+            }
+
+            return casts;
         }
 
         private static Genre GetGenreById(int tmdbGenreId)

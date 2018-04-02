@@ -15,20 +15,21 @@ namespace Movies.Data.Repositories
         private readonly TMDbClient _client;
         private const string TmdbApiKey = "f260170a65522e5006559539ef75a2c2";
 
-        protected CastRepository(MovieDbContext context) : base(context)
+        public CastRepository(MovieDbContext context) : base(context)
         {
             _client = new TMDbClient(TmdbApiKey) { DefaultCountry = "us" };
         }
 
-        public Task<TMDbLib.Objects.Movies.Movie> GetCastForMovie(int tmdbId)
+        public async Task<TMDbLib.Objects.Movies.Credits> GetCastsForMovie(int tmdbId)
         {
-            throw new NotImplementedException();
+            var movie = await _client.GetMovieCreditsAsync(tmdbId);
+            return movie;
         }
     }
 
     public interface ICastRepository : IRepository<Models.Cast>
     {
-        Task<TMDbLib.Objects.Movies.Movie> GetCastForMovie(int tmdbId);
+        Task<TMDbLib.Objects.Movies.Credits> GetCastsForMovie(int tmdbId);
 
     }
 }
