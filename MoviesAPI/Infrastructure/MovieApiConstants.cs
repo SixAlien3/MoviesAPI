@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace MoviesAPI.Infrastructure
+﻿namespace MoviesAPI.Infrastructure
 {
     public class MovieApiConstants
     {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Movies.Models.Common;
-using Newtonsoft.Json;
+﻿using Movies.Models.Common;
 
 namespace Movies.Models
 {

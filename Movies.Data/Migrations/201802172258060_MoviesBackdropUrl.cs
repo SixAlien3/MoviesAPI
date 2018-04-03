@@ -1,8 +1,7 @@
 namespace Movies.Data.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class MoviesBackdropUrl : DbMigration
     {
         public override void Up()

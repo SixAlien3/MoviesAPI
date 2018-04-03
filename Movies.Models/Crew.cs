@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Movies.Models.Common;
+﻿using Movies.Models.Common;
 using Newtonsoft.Json;
 
 namespace Movies.Models
@@ -18,7 +13,6 @@ namespace Movies.Models
         [JsonProperty("id")]
         public int ExternalId { get; set; }
 
-        [JsonProperty("profile_path")]
         public string ProfilePath { get; set; }
     }
 }

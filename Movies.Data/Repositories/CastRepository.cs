@@ -1,12 +1,6 @@
 ﻿using Movies.Data.Common;
-using Movies.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TMDbLib.Client;
-using TMDbLib.Objects.Movies;
 
 namespace Movies.Data.Repositories
 {

@@ -10,8 +10,6 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using Movies.Data.Repositories;
 using Movies.Models;
-using MoviesAPI.Filters;
-using MoviesAPI.Infrastructure;
 using MoviesAPI.Models;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;

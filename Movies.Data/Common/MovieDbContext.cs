@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Movies.Models;
 using Movies.Models.Common;
 
 namespace Movies.Data.Common
 {
-   public class MovieDbContext : IdentityDbContext<ApplicationUser>
+    public class MovieDbContext : IdentityDbContext<ApplicationUser>
     {
         public MovieDbContext(): base("Name=MovieDbContext", throwIfV1Schema: false)
         {

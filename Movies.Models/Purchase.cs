@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Movies.Models.Common;
 
 namespace Movies.Models
 {
-   public class Purchase : AuditableEntity
+    public class Purchase : AuditableEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid PurchaseNumber { get; set; }

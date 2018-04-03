@@ -1,6 +1,4 @@
 using System.Web.Http;
-using WebActivatorEx;
-using MoviesAPI;
 using Swashbuckle.Application;
 
 //[assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
