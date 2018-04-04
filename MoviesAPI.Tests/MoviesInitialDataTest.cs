@@ -94,7 +94,7 @@ namespace MoviesAPI.Tests
                         movie.Tagline = mov.tagline;
                         movie.AverageVote = Decimal.TryParse(mov.vote_average, out avgVote) ? avgVote : 0;
                         movie.Budget = Decimal.TryParse(mov.budget, out budget) ? budget : 0;
-                        movie.WebsiteUrl = mov.homepage;
+                        movie.HomePage = mov.homepage;
                         movie.Revenue = Decimal.TryParse(mov.revenue, out revenue) ? revenue : 0;
                         movie.RunTime = Int32.TryParse(mov.runtime, out runtime) ? runtime : 0;
                         movie.OriginalLanguage = mov.original_language;

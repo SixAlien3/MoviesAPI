@@ -1,12 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using AutoMapper;
 using Movies.Models;
-using MoviesAPI.Models;
 using TMDbLib.Objects.General;
+using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
+using Cast = Movies.Models.Cast;
+using Credits = MoviesAPI.Models.Credits;
 using Crew = Movies.Models.Crew;
 using Genre = Movies.Models.Genre;
+using Keyword = Movies.Models.Keyword;
+using Movie = Movies.Models.Movie;
 
 namespace MoviesAPI.Infrastructure
 {
@@ -29,6 +34,7 @@ namespace MoviesAPI.Infrastructure
                     config.CreateMap<TMDbLib.Objects.Movies.Movie, Movie>()
                         .ForMember(dest => dest.AverageVote, opts => opts.MapFrom(src => src.VoteAverage))
                         .ForMember(dest => dest.ExternalId, opts => opts.MapFrom(src => src.Id))
+                        .ForMember(dest => dest.Keywords, opts => opts.ResolveUsing(src => MapKeyWords(src.Keywords)))
                         .ForMember(dest => dest.ImdbId,
                             opts => opts.MapFrom(src => $"http://www.imdb.com/title/{src.ImdbId}"))
                         .ForMember(dest => dest.BackdropUrl,
@@ -51,6 +57,18 @@ namespace MoviesAPI.Infrastructure
                             opts => opts.ResolveUsing(src => ConvertProfilePathCrew(src.Crew)));
                 }
             );
+        }
+
+        private static object MapKeyWords(KeywordsContainer srcKeywords)
+        {
+            var keywords = new List<Keyword>();
+
+            foreach (var keyword in srcKeywords.Keywords)
+            {
+                keywords.Add(new Keyword {Id = keyword.Id, Name = keyword.Name});
+            }
+
+            return keywords;
         }
 
         private static List<Movies.Models.Crew> ConvertProfilePathCrew(List<TMDbLib.Objects.General.Crew> srcCrew)
