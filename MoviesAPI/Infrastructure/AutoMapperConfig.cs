@@ -62,7 +62,7 @@ namespace MoviesAPI.Infrastructure
                 {
                     ProfilePath = string.IsNullOrEmpty(crew.ProfilePath)
                         ? string.Empty
-                        : $"http://image.tmdb.org/t/p/w185/{crew.ProfilePath}",
+                        : $"http://image.tmdb.org/t/p/w300/{crew.ProfilePath}",
                     Gender = crew.Gender.ToString(),
                     ExternalId = crew.Id,
                     Department = crew.Department,
@@ -83,7 +83,7 @@ namespace MoviesAPI.Infrastructure
                 {
                     ProfilePath = string.IsNullOrEmpty(cast.ProfilePath)
                         ? string.Empty
-                        : $"http://image.tmdb.org/t/p/w185/{cast.ProfilePath}",
+                        : $"http://image.tmdb.org/t/p/w300/{cast.ProfilePath}",
                     Name = cast.Name,
                     Gender = cast.Gender.ToString(),
                     ExternalId = cast.Id,

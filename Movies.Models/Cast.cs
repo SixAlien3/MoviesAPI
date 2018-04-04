@@ -10,7 +10,6 @@ namespace Movies.Models
         public int Order { get; set; }
         [JsonProperty("id")]
         public int ExternalId { get; set; }
-
         public string ProfilePath { get; set; }
     }
 }

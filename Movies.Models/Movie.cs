@@ -20,7 +20,8 @@ namespace Movies.Models
         public string Tagline { get; set; }
         public decimal Budget { get; set; }
         public decimal Revenue { get; set; }
-        public string WebsiteUrl { get; set; }
+        [JsonProperty("homepage")]
+        public string HomePage { get; set; }
         public string ImdbId { get; set; }
 
         [JsonIgnore]
