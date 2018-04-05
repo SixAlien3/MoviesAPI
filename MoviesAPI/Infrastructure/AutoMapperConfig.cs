@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using AutoMapper;
@@ -42,7 +43,8 @@ namespace MoviesAPI.Infrastructure
                         .ForMember(dest => dest.Genres,
                             opts => opts.ResolveUsing(src => ConvertTmdbGenresToCustomGenres(src.Genres)))
                         .ForMember(dest => dest.PosterUrl,
-                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w342/{src.PosterPath}"));
+                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w342/{src.PosterPath}"))
+                        .ForMember(dest => dest.Trailers, opts => opts.ResolveUsing(src => GetAllTrailers(src.Videos)));
 
                     config.CreateMap<Video, Trailer>()
                         .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Key))
@@ -57,6 +59,25 @@ namespace MoviesAPI.Infrastructure
                             opts => opts.ResolveUsing(src => ConvertProfilePathCrew(src.Crew)));
                 }
             );
+        }
+
+        private static List<Trailer> GetAllTrailers(ResultContainer<Video> srcVideos)
+        {
+            var trailers = new List<Trailer>();
+            foreach (var trailer in srcVideos.Results)
+            {
+                trailers.Add(new Trailer
+                {
+                    Id = int.TryParse(trailer.Id, out var id) ? id : 0,
+                    Key = trailer.Key,
+                    Url = $"https://www.youtube.com/watch?v={trailer.Key}",
+                    Site = trailer.Site,
+                    Name = trailer.Name,
+                    Type = trailer.Type
+                });
+            }
+
+            return trailers;
         }
 
         private static object MapKeyWords(KeywordsContainer srcKeywords)
