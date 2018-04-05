@@ -107,7 +107,7 @@ namespace MoviesAPI.Controllers
             var movie = await _movieRepository.GetMovieDetailsFromTmdb(tmdbId);
             var response = movie != null
                 ? Request.CreateResponse(HttpStatusCode.OK,
-                    AutoMapper.Mapper.Map<TMDbLib.Objects.Movies.Movie, Movie>(movie))
+                    AutoMapper.Mapper.Map<TMDbLib.Objects.Movies.Movie, MovieDto>(movie))
                 : Request.CreateResponse(HttpStatusCode.NotFound, "No Movie on tmdb was found");
 
             return ResponseMessage(response);

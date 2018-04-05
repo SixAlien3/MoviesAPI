@@ -64,7 +64,7 @@ namespace Movies.Data.Repositories
         public async Task<TMDbLib.Objects.Movies.Movie> GetMovieDetailsFromTmdb(int tmdbId)
         {
             var movie = await _client.GetMovieAsync(tmdbId, TMDbLib.Objects.Movies.MovieMethods.Keywords | TMDbLib.Objects.Movies.MovieMethods.Similar | TMDbLib.Objects.Movies.MovieMethods.Videos |
-                                                            TMDbLib.Objects.Movies.MovieMethods.Images);
+                                                            TMDbLib.Objects.Movies.MovieMethods.Images | TMDbLib.Objects.Movies.MovieMethods.Recommendations);
             return movie;
         }
 

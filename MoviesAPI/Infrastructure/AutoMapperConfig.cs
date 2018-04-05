@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using AutoMapper;
 using Movies.Models;
+using MoviesAPI.Models;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
@@ -32,7 +33,7 @@ namespace MoviesAPI.Infrastructure
                         .ForMember(dest => dest.PosterUrl,
                             opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w342/{src.PosterPath}"));
 
-                    config.CreateMap<TMDbLib.Objects.Movies.Movie, Movie>()
+                    config.CreateMap<TMDbLib.Objects.Movies.Movie, MovieDto>()
                         .ForMember(dest => dest.AverageVote, opts => opts.MapFrom(src => src.VoteAverage))
                         .ForMember(dest => dest.ExternalId, opts => opts.MapFrom(src => src.Id))
                         .ForMember(dest => dest.Keywords, opts => opts.ResolveUsing(src => MapKeyWords(src.Keywords)))
@@ -43,7 +44,7 @@ namespace MoviesAPI.Infrastructure
                         .ForMember(dest => dest.Genres,
                             opts => opts.ResolveUsing(src => ConvertTmdbGenresToCustomGenres(src.Genres)))
                         .ForMember(dest => dest.PosterUrl,
-                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w342/{src.PosterPath}"))
+                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w1280/{src.PosterPath}"))
                         .ForMember(dest => dest.Trailers, opts => opts.ResolveUsing(src => GetAllTrailers(src.Videos)));
 
                     config.CreateMap<Video, Trailer>()
