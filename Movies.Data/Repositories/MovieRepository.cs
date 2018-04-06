@@ -79,6 +79,12 @@ namespace Movies.Data.Repositories
             var credits = await _client.GetMovieCreditsAsync(tmdbId);
             return credits;
         }
+
+        public async Task<SearchContainerWithId<SearchMovie>> GetMoviesByGenre(int genreId)
+        {
+            var movies = await _client.GetGenreMoviesAsync(genreId);
+            return movies;
+        }
     }
 
     public interface IMovieRepository : IRepository<Movie>
@@ -91,5 +97,6 @@ namespace Movies.Data.Repositories
         Task<TMDbLib.Objects.Movies.Movie> GetMovieDetailsFromTmdb(int tmdbId);
         Task<ResultContainer<Video>> GetMovieVideosAsync(int tmdbId);
         Task<TMDbLib.Objects.Movies.Credits> GetCastsForMovie(int tmdbId);
+        Task<SearchContainerWithId<SearchMovie>> GetMoviesByGenre(int genreId);
     }
 }

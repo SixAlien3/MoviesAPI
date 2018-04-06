@@ -11,6 +11,7 @@ using System.Web.Http.Cors;
 using Movies.Data.Repositories;
 using Movies.Models;
 using MoviesAPI.Models;
+using MoviesAPI.Utilities;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
 
@@ -59,33 +60,46 @@ namespace MoviesAPI.Controllers
         }
 
 
+        //[HttpGet]
+        //[Route("genre/{genreid}/{page:int?}")]
+        //public IHttpActionResult GetAllMoviesBygenre(int genreId, int? page = 1)
+        //{
+        //    var totalCount = 0;
+        //    const int pageSize = 24;
+        //    int skip;
+        //    if (page.HasValue && page > 1)
+        //    {
+        //        skip = (page.Value - 1) * pageSize;
+        //    }
+        //    else
+        //    {
+        //        skip = 0;
+        //    }
+
+        //    totalCount = _movieRepository.GetQueryable().Count(m => m.Genres.Any(g => g.Id == genreId));
+        //    var movies = totalCount > 0
+        //        ? _movieRepository.GetQueryable().Where(m => m.Genres.Any(g => g.Id == genreId)).Include(b => b.Genres)
+        //            .OrderByDescending(o => o.Popularity)
+        //            .Skip(skip).Take(pageSize)
+        //        : null;
+        //    var response = movies != null && movies.Any()
+        //        ? Request.CreateResponse(HttpStatusCode.OK, movies)
+        //        : Request.CreateResponse(HttpStatusCode.NotFound, "No Movies Found");
+        //    response.Headers.Add("X-Total-Count", totalCount.ToString());
+
+        //    return ResponseMessage(response);
+        //}
+
         [HttpGet]
         [Route("genre/{genreid}/{page:int?}")]
-        public IHttpActionResult GetAllMoviesBygenre(int genreId, int? page = 1)
+        public async Task<IHttpActionResult> GetAllMoviesBygenre(int genreId, int? page = 1)
         {
-            var totalCount = 0;
-            const int pageSize = 24;
-            int skip;
-            if (page.HasValue && page > 1)
-            {
-                skip = (page.Value - 1) * pageSize;
-            }
-            else
-            {
-                skip = 0;
-            }
-
-            totalCount = _movieRepository.GetQueryable().Count(m => m.Genres.Any(g => g.Id == genreId));
-            var movies = totalCount > 0
-                ? _movieRepository.GetQueryable().Where(m => m.Genres.Any(g => g.Id == genreId)).Include(b => b.Genres)
-                    .OrderByDescending(o => o.Popularity)
-                    .Skip(skip).Take(pageSize)
-                : null;
-            var response = movies != null && movies.Any()
-                ? Request.CreateResponse(HttpStatusCode.OK, movies)
-                : Request.CreateResponse(HttpStatusCode.NotFound, "No Movies Found");
-            response.Headers.Add("X-Total-Count", totalCount.ToString());
-
+            var movies = await _movieRepository.GetMoviesByGenre(Utility.GetGenreById(genreId));
+            var response = movies != null
+                ? Request.CreateResponse(HttpStatusCode.OK,
+                    AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>( movies.Results)
+                    )
+                : Request.CreateResponse(HttpStatusCode.NotFound, "No Movies were found");
             return ResponseMessage(response);
         }
 
@@ -153,7 +167,9 @@ namespace MoviesAPI.Controllers
         public async Task<IList<Movie>> GetUpcomingMovies()
         {
             var tmdbMovies = await _movieRepository.GetUpComing();
-            var movies = AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results.Where(m=>m.ReleaseDate> DateTime.Now).ToList());
+            var movies =
+                AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(tmdbMovies.Results
+                    .Where(m => m.ReleaseDate > DateTime.Now).ToList());
             return movies;
         }
 
