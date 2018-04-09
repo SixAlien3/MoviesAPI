@@ -27,11 +27,11 @@ namespace MoviesAPI.Infrastructure
                         .ForMember(dest => dest.AverageVote, opts => opts.MapFrom(src => src.VoteAverage))
                         .ForMember(dest => dest.ExternalId, opts => opts.MapFrom(src => src.Id))
                         .ForMember(dest => dest.BackdropUrl,
-                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w1280/{src.BackdropPath}"))
+                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/original/{src.BackdropPath}"))
                         .ForMember(dest => dest.Genres,
                             opts => opts.ResolveUsing(src => GetAllMovieGenres(src.GenreIds)))
                         .ForMember(dest => dest.PosterUrl,
-                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w342/{src.PosterPath}"));
+                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w1280/{src.PosterPath}"));
 
                     config.CreateMap<TMDbLib.Objects.Movies.Movie, MovieDto>()
                         .ForMember(dest => dest.AverageVote, opts => opts.MapFrom(src => src.VoteAverage))
@@ -40,7 +40,7 @@ namespace MoviesAPI.Infrastructure
                         .ForMember(dest => dest.ImdbId,
                             opts => opts.MapFrom(src => $"http://www.imdb.com/title/{src.ImdbId}"))
                         .ForMember(dest => dest.BackdropUrl,
-                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/w1280/{src.BackdropPath}"))
+                            opts => opts.MapFrom(src => $"http://image.tmdb.org/t/p/original/{src.BackdropPath}"))
                         .ForMember(dest => dest.Genres,
                             opts => opts.ResolveUsing(src => ConvertTmdbGenresToCustomGenres(src.Genres)))
                         .ForMember(dest => dest.PosterUrl,

@@ -11,7 +11,7 @@ namespace Movies.Data.Repositories
 
         public CastRepository(MovieDbContext context) : base(context)
         {
-            _client = new TMDbClient(TmdbApiKey) { DefaultCountry = "us" };
+            _client = new TMDbClient(TmdbApiKey) {DefaultCountry = "us"};
         }
 
         public async Task<TMDbLib.Objects.Movies.Credits> GetCastsForMovie(int tmdbId)
@@ -24,6 +24,5 @@ namespace Movies.Data.Repositories
     public interface ICastRepository : IRepository<Models.Cast>
     {
         Task<TMDbLib.Objects.Movies.Credits> GetCastsForMovie(int tmdbId);
-
     }
 }
