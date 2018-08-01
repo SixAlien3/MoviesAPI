@@ -6,7 +6,7 @@ namespace MoviesAPI.Controllers
 {
     [RoutePrefix("api/cast")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class CastController : ApiController
+    public class CastController : BaseApiController
     {
         private readonly ICastRepository _castRepository;
         private readonly IUserRepository _userRepository;

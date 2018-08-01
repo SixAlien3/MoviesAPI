@@ -9,7 +9,7 @@ namespace MoviesAPI.Controllers
 {
     [RoutePrefix("api/genres")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class GenreController : ApiController
+    public class GenreController : BaseApiController
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IGenreRepository _genreRepository;

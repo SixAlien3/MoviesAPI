@@ -20,7 +20,7 @@ namespace MoviesAPI.Controllers
     [RoutePrefix("api/movies")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     //[JwtAuthentication]
-    public class MoviesController : ApiController
+    public class MoviesController : BaseApiController
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IUserRepository _userRepository;

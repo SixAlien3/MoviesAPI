@@ -47,8 +47,7 @@ namespace MoviesAPI.Controllers
         [Route("Favorite")]
         public IHttpActionResult AddFavorite(FavoriteModel model)
         {
-            var curre = this.UserName;
-
+            var userId = UserId;
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK));
         }
     }

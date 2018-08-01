@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -11,20 +12,13 @@ namespace MoviesAPI.Controllers
     public class BaseApiController : ApiController
     {
         private ModelFactory _modelFactory;
-        private ApplicationUserManager _AppUserManager = null;
-        private ApplicationRoleManager _AppRoleManager = null;
+        private readonly ApplicationUserManager _appUserManager = null;
+        private readonly ApplicationRoleManager _appRoleManager = null;
 
-        protected ApplicationUserManager AppUserManager
-        {
-            get { return _AppUserManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
-        }
-
-        protected ApplicationRoleManager AppRoleManager
-        {
-            get { return _AppRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>(); }
-        }
-
-        public string UserName => RequestContext.Principal.Identity.GetCurrentUserName();
+        protected ApplicationUserManager AppUserManager => _appUserManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        protected ApplicationRoleManager AppRoleManager => _appRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+        protected string UserName => RequestContext.Principal.Identity.GetCurrentUserName();
+        protected string UserId => AppUserManager.FindByName(UserName).Id;
 
         public BaseApiController()
         {

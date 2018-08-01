@@ -307,7 +307,7 @@ namespace MoviesAPI.Tests
 
                     // movieCastDictionary.Add(movieid, eachMovieCasts);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     //Console.WriteLine(c.id + ":: " + e.InnerException);
                 }
