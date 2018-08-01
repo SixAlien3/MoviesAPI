@@ -6,13 +6,14 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using Movies.Data.Repositories;
 using MoviesAPI.Filters;
+using MoviesAPI.Models;
 
 namespace MoviesAPI.Controllers
 {
     [RoutePrefix("api/Customers")]
     [JwtAuthentication]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class CustomerController : ApiController
+    public class CustomerController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
         private readonly IMovieRepository _movieRepository;
@@ -40,6 +41,15 @@ namespace MoviesAPI.Controllers
             response.Headers.Add("X-Total-Count", favoriteMovies.Count().ToString());
 
             return ResponseMessage(response);
+        }
+
+        [HttpPost]
+        [Route("Favorite")]
+        public IHttpActionResult AddFavorite(FavoriteModel model)
+        {
+            var curre = this.UserName;
+
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK));
         }
     }
 }

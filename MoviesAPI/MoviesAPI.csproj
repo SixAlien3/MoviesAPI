@@ -214,6 +214,7 @@
     <Compile Include="Controllers\GenreController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
+    <Compile Include="Extensions\IdentityHelpers.cs" />
     <Compile Include="Extensions\SwaggerExtensions.cs" />
     <Compile Include="Filters\AddChallengeOnUnauthorizedResult.cs" />
     <Compile Include="Filters\AuthenticationFailureResult.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="Models\CreateRoleBindingModel.cs" />
     <Compile Include="Models\CreateUserBindingModel.cs" />
     <Compile Include="Models\Credits.cs" />
+    <Compile Include="Models\FavoriteModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ModelFactory.cs" />
     <Compile Include="Models\MovieDto.cs" />

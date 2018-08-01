@@ -32,10 +32,10 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{page:int?}")]
+        [Route("{page?}/{title?}")]
         public IHttpActionResult GetAllMovies(int? page = 1, string title = "")
         {
-            const int pageSize = 24;
+            const int pageSize = 20;
             int skip;
 
             if (page.HasValue && page > 1)
@@ -97,8 +97,8 @@ namespace MoviesAPI.Controllers
             var movies = await _movieRepository.GetMoviesByGenre(Utility.GetGenreById(genreId));
             var response = movies != null
                 ? Request.CreateResponse(HttpStatusCode.OK,
-                    AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>( movies.Results)
-                    )
+                    AutoMapper.Mapper.Map<IList<SearchMovie>, IList<Movie>>(movies.Results)
+                )
                 : Request.CreateResponse(HttpStatusCode.NotFound, "No Movies were found");
             return ResponseMessage(response);
         }

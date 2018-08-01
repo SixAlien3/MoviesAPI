@@ -3,6 +3,7 @@ using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Movies.Data.Infrastructure;
+using MoviesAPI.Extensions;
 using MoviesAPI.Models;
 
 namespace MoviesAPI.Controllers
@@ -15,19 +16,15 @@ namespace MoviesAPI.Controllers
 
         protected ApplicationUserManager AppUserManager
         {
-            get
-            {
-                return _AppUserManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
+            get { return _AppUserManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
         }
 
         protected ApplicationRoleManager AppRoleManager
         {
-            get
-            {
-                return _AppRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
-            }
+            get { return _AppRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>(); }
         }
+
+        public string UserName => RequestContext.Principal.Identity.GetCurrentUserName();
 
         public BaseApiController()
         {
@@ -41,6 +38,7 @@ namespace MoviesAPI.Controllers
                 {
                     _modelFactory = new ModelFactory(this.Request, this.AppUserManager);
                 }
+
                 return _modelFactory;
             }
         }
