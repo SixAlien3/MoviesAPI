@@ -1,0 +1,61 @@
+﻿using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Movies.Data.Common;
+using Movies.Data.Infrastructure;
+
+namespace Movies.Data.Repositories
+{
+    public class RoleRepository : Repository<IdentityRole>, IRoleRepository
+    {
+        private readonly ApplicationUserManager _appUserManager;
+        private readonly ApplicationRoleManager _appRoleManager;
+
+        public RoleRepository(MovieDbContext context, ApplicationUserManager appUserManager,
+            ApplicationRoleManager appRoleManager) : base(context)
+        {
+            _appUserManager = appUserManager;
+            _appRoleManager = appRoleManager;
+        }
+
+        public async Task<IdentityResult> CreateAsync(IdentityRole role)
+        {
+            return await _appRoleManager.CreateAsync(role);
+        }
+
+        public async Task<IdentityResult> DeleteAsync(IdentityRole role)
+        {
+            return await _appRoleManager.DeleteAsync(role);
+        }
+
+        public async Task<IdentityRole> FindByIdAsync(string roleId)
+        {
+            return await _appRoleManager.FindByIdAsync(roleId);
+        }
+
+        public async Task<IdentityRole> FindByNameAsync(string roleName)
+        {
+            return await _appRoleManager.FindByNameAsync(roleName);
+        }
+
+        public async Task<bool> RoleExistsAsync(string roleName)
+        {
+            return await _appRoleManager.RoleExistsAsync(roleName);
+        }
+
+        public async Task<IdentityResult> UpdateAsync(IdentityRole role)
+        {
+            return await _appRoleManager.UpdateAsync(role);
+        }
+    }
+
+    public interface IRoleRepository : IRepository<IdentityRole>
+    {
+        Task<IdentityResult> CreateAsync(IdentityRole role);
+        Task<IdentityResult> DeleteAsync(IdentityRole role);
+        Task<IdentityRole> FindByIdAsync(string roleId);
+        Task<IdentityRole> FindByNameAsync(string roleName);
+        Task<bool> RoleExistsAsync(string roleName);
+        Task<IdentityResult> UpdateAsync(IdentityRole role);
+    }
+}

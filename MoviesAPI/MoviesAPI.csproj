@@ -213,6 +213,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\GenreController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Extensions\IdentityHelpers.cs" />
     <Compile Include="Extensions\SwaggerExtensions.cs" />
