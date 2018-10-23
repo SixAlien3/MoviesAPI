@@ -83,7 +83,7 @@ namespace Movies.Data.Common
 
         public IQueryable<T> GetQueryable()
         {
-            return this.DbSet.AsQueryable<T>();
+            return DbSet.AsQueryable<T>();
         }
 
         public void SaveChanges()
