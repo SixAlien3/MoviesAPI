@@ -23,6 +23,7 @@ namespace MoviesAPI.Controllers
             _applicationRoleManager = appRoleManager;
             _roleRepository = roleRepository;
             _userRepository = userRepository;
+
         }
 
         [Route("", Name = "GetAllRoles")]
